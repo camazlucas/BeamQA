@@ -95,12 +95,6 @@ class PyKEENLoader():
         #     for i in range(relation_emb.shape[0])
         # ]
 
-        # return (
-        #     entity2idx,
-        #     rel2idx,
-        #     embedding_matrix,
-        #     relation_matrix
-        # )
         entity_emb = (
             model.entity_representations[0]()
             .detach()
@@ -136,3 +130,10 @@ class PyKEENLoader():
             relation_emb[i]
             for i in range(relation_emb.shape[0])
         ]
+
+        return (
+            entity2idx,
+            rel2idx,
+            embedding_matrix,
+            relation_matrix
+        )
