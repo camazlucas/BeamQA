@@ -1,6 +1,6 @@
 import torch
 from pykeen_loader import  PyKEENLoader
-import networkx as nx
+import pickle
 
 def get_embeddings(path,model_name):
     ckp = PyKEENLoader(path)
@@ -35,6 +35,7 @@ def process_text_file(text_file):
 
 
 def load_graph(path):
-    nx_graph = nx.read_gpickle(path)
+    with open(path, "rb") as f:
+        nx_graph = pickle.load(f)
     return nx_graph
 
