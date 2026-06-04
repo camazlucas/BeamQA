@@ -5,7 +5,7 @@ from transformers import (
     BartForConditionalGeneration
 )
 
-MODEL_DIR = "./bart_metaqa_all_hops/final_model"
+MODEL_DIR = "./Bart-Relational-Paths-0"
 
 tokenizer = BartTokenizer.from_pretrained(MODEL_DIR)
 
@@ -16,6 +16,11 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
 model.eval()
 
+def predict(question):
+    inputs = tokenizer(question, return_tensors="pt").to(model.device)
+    outputs = model.generate(**inputs, max_length=128)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+
 while True:
 
     question = input("\nPergunta: ")
@@ -23,26 +28,7 @@ while True:
     if question.lower() == "exit":
         break
 
-    inputs = tokenizer(
-        question,
-        return_tensors="pt"
-    ).to(device)
+    print(predict(question))
 
-    outputs = model.generate(
-        **inputs,
-        max_length=8,
-        num_beams=5,
-        num_return_sequences=5,
-        early_stopping=True
-    )
 
-    print("\nCaminhos gerados:")
-
-    for i, output in enumerate(outputs):
-
-        path = tokenizer.decode(
-            output,
-            skip_special_tokens=True
-        )
-
-        print(f"{i+1}: {path}")
+# print(predict("who directed movies written by Quentin Tarantino"))
