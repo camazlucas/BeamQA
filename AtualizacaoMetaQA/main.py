@@ -30,7 +30,7 @@ args = parser.parse_args()
 device = 'cuda:'+str(args.gpu)
 # device = 'cpu'
 ## KG path
-kg_model_path = '../Data/Graph_data/MetaQA/complex_metaqa_100/'
+kg_model_path = '../Data/Graph_data/MetaQA/MetaQA/complex_metaqa_100_inv/'
 kg_model_name = 'trained_model.pkl'
 ## best kg embedding model (obtained with libKge)
 nx_graph_path ='../Data/Graph_data/MetaQA/MetaQA-'+args.kg_type+'.gpickle'
