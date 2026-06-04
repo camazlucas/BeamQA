@@ -73,6 +73,34 @@ class PyKEENLoader():
             for _, row in relation_df.iterrows()
         }
 
+        # entity_emb = (
+        #     model.entity_representations[0]()
+        #     .detach()
+        #     .cpu()
+        # )
+
+        # relation_emb = (
+        #     model.relation_representations[0]()
+        #     .detach()
+        #     .cpu()
+        # )
+
+        # embedding_matrix = [
+        #     entity_emb[i]
+        #     for i in range(entity_emb.shape[0])
+        # ]
+
+        # relation_matrix = [
+        #     relation_emb[i]
+        #     for i in range(relation_emb.shape[0])
+        # ]
+
+        # return (
+        #     entity2idx,
+        #     rel2idx,
+        #     embedding_matrix,
+        #     relation_matrix
+        # )
         entity_emb = (
             model.entity_representations[0]()
             .detach()
@@ -85,6 +113,20 @@ class PyKEENLoader():
             .cpu()
         )
 
+        entity_emb = torch.cat(
+            [entity_emb.real, entity_emb.imag],
+            dim=1
+        )
+
+        relation_emb = torch.cat(
+            [relation_emb.real, relation_emb.imag],
+            dim=1
+        )
+
+        print(entity_emb.shape)
+        print(relation_emb.shape)
+        print(entity_emb.dtype)
+
         embedding_matrix = [
             entity_emb[i]
             for i in range(entity_emb.shape[0])
@@ -94,10 +136,3 @@ class PyKEENLoader():
             relation_emb[i]
             for i in range(relation_emb.shape[0])
         ]
-
-        return (
-            entity2idx,
-            rel2idx,
-            embedding_matrix,
-            relation_matrix
-        )
