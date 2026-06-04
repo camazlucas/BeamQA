@@ -36,6 +36,5 @@ def process_text_file(text_file):
 
 def load_graph(path):
     with open(path, "rb") as f:
-        nx_graph = pickle.load(f)
-    return nx_graph
+        return pickle.load(f)
 

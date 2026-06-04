@@ -41,7 +41,7 @@ model = Model(embedding_matrices,args.dropout,args.do_batchnorm,args.do_dropout)
 train_data_path = '../Data/QA_data/MetaQA/train_'+str(args.hops)+'hop.txt'
 test_data_path = '../Data/QA_data/MetaQA/test_'+str(args.hops)+'hop.txt'
 ### Graph created using networx
-nx_graph = '../Data/Graph_data/MetaQA/MetaQA-'+ args.kg_type +'.gpickle'
+nx_graph = "../Data/Graph_data/MetaQA/MetaQA/MetaQA_graph.pkl"
 
 if args.mode == 'BeamQA':
     test_score = evaluate_beamQA(model=model, data_path=test_data_path,
