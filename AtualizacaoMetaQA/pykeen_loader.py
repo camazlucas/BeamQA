@@ -73,6 +73,15 @@ class PyKEENLoader():
             for _, row in relation_df.iterrows()
         }
 
+        original_rels = list(rel2idx.keys())
+            
+        for rel in original_rels:
+            rel2idx[rel + "_inv"] = len(rel2idx)
+
+        print("Número de relações:", len(rel2idx))
+        print(rel2idx.keys())
+        
+
         # entity_emb = (
         #     model.entity_representations[0]()
         #     .detach()
