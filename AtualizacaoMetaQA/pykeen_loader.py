@@ -1,6 +1,7 @@
 import os
 import torch
 import pandas as pd
+from torch.utils.data import Dataset
 
 class DatasetMetaQA_all_hops(Dataset):
     def __init__(self, data, entity2idx, rel2idx):

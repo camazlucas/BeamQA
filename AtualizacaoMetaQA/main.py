@@ -39,7 +39,7 @@ embedding_matrices , entity2idx, rel2idx , idx2rel = get_embeddings(kg_model_pat
 model = Model(embedding_matrices,args.dropout,args.do_batchnorm,args.do_dropout).to(device)
 
 train_data_path = '../Data/QA_data/MetaQA/train_'+str(args.hops)+'hop.txt'
-test_data_path = '/storage/Embedkg/data/QA_data/MetaQA/test_'+str(args.hops)+'hop.txt'
+test_data_path = '../Data/QA_data/MetaQA/test_'+str(args.hops)+'hop.txt'
 ### Graph created using networx
 nx_graph = '../Data/Graph_data/MetaQA/MetaQA-'+ args.kg_type +'.gpickle'
 
