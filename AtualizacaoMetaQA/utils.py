@@ -4,7 +4,7 @@ import networkx as nx
 
 def get_embeddings(path,model_name):
     ckp = PyKEENLoader(path)
-    entity2idx, rel2idx, embedding_matrix, embedding_matrix_rel = ckp.load_libkge_checkpoint(model_name,dim=256)
+    entity2idx, rel2idx, embedding_matrix, embedding_matrix_rel = ckp.load_pykeen_checkpoint(model_name,dim=256)
 
     embedding_matrix_rel.append(torch.zeros(embedding_matrix_rel[0].shape[0]))  ### this is a padding embedding
     print('Ent ', len(embedding_matrix), len(embedding_matrix_rel), embedding_matrix[0].shape,
