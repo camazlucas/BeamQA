@@ -109,7 +109,7 @@ def check_rec(prev_return, rel,head,topK,model,entity2idx,idx2entity,rel2idx,nx_
     entity_score = []
     for prev_entity, prev_score, prev_triples in prev_return:
         for entity, score, triple in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
-            if entity !=  head: entity_score.append((entity, score * prev_score, triple ))
+            if entity !=  head: entity_score.append((entity, score * prev_score, prev_triples + [triple]))
 
     return sorted(entity_score, key= lambda x: x[1], reverse=True)[:topK]
 
