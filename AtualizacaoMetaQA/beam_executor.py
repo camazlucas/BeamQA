@@ -9,8 +9,8 @@ def execute_beam(
     idx2entity,
     rel2idx,
     nx_graph,
-    device,
-    topk
+    device=device,
+    topk=topk
 ):
 
     answer, score, triples = path_finder_rec(
@@ -22,8 +22,8 @@ def execute_beam(
         idx2entity,
         rel2idx,
         nx_graph,
-        device,
-        topk
+        device=device,
+        topk=topk
     )
 
     return {
