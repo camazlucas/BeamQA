@@ -78,8 +78,8 @@ class PyKEENLoader():
         for rel in original_rels:
             rel2idx[rel + "_inv"] = len(rel2idx)
 
-        print("Número de relações:", len(rel2idx))
-        print(rel2idx.keys())
+        # print("Número de relações:", len(rel2idx))
+        # print(rel2idx.keys())
         
 
         # entity_emb = (
