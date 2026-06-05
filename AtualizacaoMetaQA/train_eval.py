@@ -75,12 +75,12 @@ def evaluate_beamQA(data_path, device, model, entity2idx, rel2idx,hops,nx_graph_
             h = idx2entity[head.item()]
             predicted_chains = [h for h in predicted_chains if len(h.split(' ')) == num_hops]
             predicted_entity, max_score, triples = path_finder_rec(h, predicted_chains, scorez, model, entity2idx, idx2entity, rel2idx, nx_graph,topk=topk, device=device)
-            print("\nRESPOSTA:", predicted_entity)
-            print("CAMINHO:")
-            for t in triples:
-                print(t)
+            # print("\nRESPOSTA:", predicted_entity)
+            # print("CAMINHO:")
+            # for t in triples:
+            #     print(t)
 
-            break
+            # break
             if predicted_entity :
                 if entity2idx[predicted_entity] in ans:
                     total_correct += 1
