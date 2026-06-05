@@ -9,8 +9,8 @@ def execute_beam(
     idx2entity,
     rel2idx,
     nx_graph,
-    device=device,
-    topk=topk
+    device="cuda:0",
+    topk = 5
 ):
 
     answer, score, triples = path_finder_rec(
