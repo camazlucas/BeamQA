@@ -96,9 +96,10 @@ def check_rec(prev_return, rel,head,topK,model,entity2idx,idx2entity,rel2idx,nx_
     entity_score = []
 
     ######################## Alterações para saída de triplas completas
-    for prev_entity, prev_score in prev_return:
+    # for prev_entity, prev_score in prev_return:
         # for entity, score in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
             # if entity !=  head: entity_score.append((entity, score * prev_score ))
+    for prev_entity, prev_score, prev_triples in prev_return:
         for entity, score, triple in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
             if entity !=  head: entity_score.append((entity, score * prev_score, triple ))
     
@@ -129,7 +130,11 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
         for j , path_i in enumerate(path):
             prev_return = check_rec(prev_return, path_i, headname, topk, model, entity2idx, idx2entity,
                                     rel2idx, nx_graph, device)
-            entity, score = prev_return[0]
+            ######################## Alterações para saída de triplas completas
+            # entity, score = prev_return[0]
+            entity, score, triples = prev_return[0]
+            ########################
+
         if entity and score * pscore > max_score:
             predicted_entity = entity
             max_score = score * pscore
