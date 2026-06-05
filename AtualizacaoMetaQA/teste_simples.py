@@ -26,28 +26,39 @@ nx_graph = load_graph(
     "../Data/Graph_data/MetaQA/MetaQA/MetaQA_graph.pkl"
 )
 
+print("\nArestas directed_by de Catch Me If You Can:")
 
-# carregar modelo e grafo
+for u, v, r in nx_graph.out_edges(
+    "Catch Me If You Can",
+    data="data"
+):
+    if r == "directed_by":
+        print(v)
 
-results = generate_paths("teste.txt")
 
-sample = results[0]
-
-head = "ginger rogers"
-
-topk = 5
-
-result = execute_beam(
-    head,
-    sample["paths"],
-    sample["scores"],
-    model,
-    entity2idx,
-    idx2entity,
-    rel2idx,
-    nx_graph,
-    device,
-    topk
-)
-
-print(result)
+## carregar modelo e grafo
+#
+#results = generate_paths("questions.txt")
+#
+#sample = results[0]
+#
+#head = "Catch Me If You Can"
+#
+#topk = 5
+#
+#print(sample)
+#
+#result = execute_beam(
+#    head,
+#    sample["paths"],
+#    sample["scores"],
+#    model,
+#    entity2idx,
+#    idx2entity,
+#    rel2idx,
+#    nx_graph,
+#    device,
+#    topk
+#)
+#
+#print(result)

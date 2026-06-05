@@ -19,10 +19,31 @@ model.eval()
 
 def generate_paths(
     input_file,
-    num_beams=5,
-    num_return_sequences=5,
+    num_beams=20,
+    num_return_sequences=20,
     max_length=18
 ):
+
+    valid_relations = {
+        "directed_by",
+        "has_genre",
+        "has_imdb_rating",
+        "has_imdb_votes",
+        "has_tags",
+        "in_language",
+        "release_year",
+        "starred_actors",
+        "written_by",
+        "directed_by_inv",
+        "has_genre_inv",
+        "has_imdb_rating_inv",
+        "has_imdb_votes_inv",
+        "has_tags_inv",
+        "in_language_inv",
+        "release_year_inv",
+        "starred_actors_inv",
+        "written_by_inv"
+    }
 
     with open(input_file, "r", encoding="utf-8") as f:
 
@@ -51,8 +72,7 @@ def generate_paths(
             return_dict_in_generate=True
         )
 
-        paths = []
-        scores = []
+        unique_paths = {}
 
         for output, score in zip(
             outputs.sequences,
@@ -62,10 +82,36 @@ def generate_paths(
             path = tokenizer.decode(
                 output,
                 skip_special_tokens=True
-            )
+            ).strip()
 
-            paths.append(path)
-            scores.append(score.item())
+            relations = path.split()
+
+            if not relations:
+                continue
+
+            if not all(
+                rel in valid_relations
+                for rel in relations
+            ):
+                continue
+
+            if path not in unique_paths:
+                unique_paths[path] = score.item()
+
+        paths = list(unique_paths.keys())
+
+        if len(unique_paths) > 0:
+
+            scores = torch.softmax(
+                torch.tensor(
+                    list(unique_paths.values())
+                ),
+                dim=0
+            ).tolist()
+
+        else:
+
+            scores = []
 
         results.append(
             {
