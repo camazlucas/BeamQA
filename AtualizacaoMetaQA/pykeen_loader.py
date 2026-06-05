@@ -126,9 +126,9 @@ class PyKEENLoader():
             dim=1
         )
 
-        print(entity_emb.shape)
-        print(relation_emb.shape)
-        print(entity_emb.dtype)
+        # print(entity_emb.shape)
+        # print(relation_emb.shape)
+        # print(entity_emb.dtype)
 
         embedding_matrix = [
             entity_emb[i]
