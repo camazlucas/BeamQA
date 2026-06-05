@@ -126,7 +126,10 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
     predicted_path = ''
     for path,pscore in zip(chains,scorez):
         path = path.split()
-        prev_return = [(headname, 1)]
+        ######################## Alterações para saída de triplas completas
+        # prev_return = [(headname, 1)]
+        prev_return = [(headname, 1, [])]
+        ########################
         for j , path_i in enumerate(path):
             prev_return = check_rec(prev_return, path_i, headname, topk, model, entity2idx, idx2entity,
                                     rel2idx, nx_graph, device)
