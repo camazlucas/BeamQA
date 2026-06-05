@@ -175,7 +175,7 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
                                     rel2idx, nx_graph, device)
             entity, score, triples = prev_return[0]
 
-
+        print("triples atuais:", triples)
         if entity and score * pscore > max_score:
             predicted_entity = entity
             max_score = score * pscore
@@ -185,6 +185,7 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
         # print("Score:", max_score)
         # print("Triples:", triples)
         # print("=============\n")
+        print("best_triples:", best_triples)
     return predicted_entity, max_score, best_triples
 
 ########################
