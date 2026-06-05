@@ -169,6 +169,7 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
         
         prev_return = [(headname, 1, [])]
         
+        best_triples = []
         for j , path_i in enumerate(path):
             prev_return = check_rec(prev_return, path_i, headname, topk, model, entity2idx, idx2entity,
                                     rel2idx, nx_graph, device)
@@ -178,12 +179,12 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
         if entity and score * pscore > max_score:
             predicted_entity = entity
             max_score = score * pscore
-        
-        print("\n=== DEBUG ===")
-        print("Entidade:", predicted_entity)
-        print("Score:", max_score)
-        print("Triples:", triples)
-        print("=============\n")
-    return predicted_entity, max_score
+            best_triples = triples
+        # print("\n=== DEBUG ===")
+        # print("Entidade:", predicted_entity)
+        # print("Score:", max_score)
+        # print("Triples:", triples)
+        # print("=============\n")
+    return predicted_entity, max_score, best_triples
 
 ########################
