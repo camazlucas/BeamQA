@@ -5,7 +5,7 @@ from transformers import (
     BartForConditionalGeneration
 )
 
-MODEL_DIR = "./Bart-Relational-Paths-0"
+MODEL_DIR = "./Modulo1/bart_metaqa_all_hops/final_model/"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
