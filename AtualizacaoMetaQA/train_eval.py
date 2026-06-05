@@ -25,6 +25,35 @@ def data_generator(data, entity2idx, rel2idx,hops):
         yield torch.tensor(head, dtype=torch.long), ans,path , beam_paths,scores
 
 
+# def evaluate_beamQA(data_path, device, model, entity2idx, rel2idx,hops,nx_graph_path,topk):
+#     model.eval()
+#     data = process_text_file(data_path)
+#     data_gen = data_generator(data=data, entity2idx=entity2idx, rel2idx=rel2idx,hops=hops)
+#     total_correct = 0
+#     idx2entity = {v:k for k,v in entity2idx.items()}
+#     num_hops = int(hops.split('hop')[0])
+#     print('Hops ',num_hops)
+#     nx_graph = load_graph(nx_graph_path)
+
+#     loader = tqdm(range(len(data)))
+#     with torch.no_grad():
+#         for i in loader :
+#             d = next(data_gen)
+#             head = d[0].to(device)
+#             ans = d[1]
+#             scorez = d[4]
+#             predicted_chains = d[3]
+#             h = idx2entity[head.item()]
+#             predicted_chains = [h for h in predicted_chains if len(h.split(' ')) == num_hops]
+#             predicted_entity, max_score = path_finder_rec(h, predicted_chains, scorez, model, entity2idx, idx2entity, rel2idx, nx_graph,topk=topk, device=device)
+#             if predicted_entity :
+#                 if entity2idx[predicted_entity] in ans:
+#                     total_correct += 1
+#             loader.set_postfix(sample=i, hits_1=(total_correct / (i + 1)))
+#         accuracy = total_correct / len(data)
+#         print('Hits@1 ',accuracy)
+#         return accuracy
+
 def evaluate_beamQA(data_path, device, model, entity2idx, rel2idx,hops,nx_graph_path,topk):
     model.eval()
     data = process_text_file(data_path)
@@ -45,7 +74,13 @@ def evaluate_beamQA(data_path, device, model, entity2idx, rel2idx,hops,nx_graph_
             predicted_chains = d[3]
             h = idx2entity[head.item()]
             predicted_chains = [h for h in predicted_chains if len(h.split(' ')) == num_hops]
-            predicted_entity, max_score = path_finder_rec(h, predicted_chains, scorez, model, entity2idx, idx2entity, rel2idx, nx_graph,topk=topk, device=device)
+            predicted_entity, max_score, triples = path_finder_rec(h, predicted_chains, scorez, model, entity2idx, idx2entity, rel2idx, nx_graph,topk=topk, device=device)
+            print("\nRESPOSTA:", predicted_entity)
+            print("CAMINHO:")
+            for t in triples:
+                print(t)
+
+            break
             if predicted_entity :
                 if entity2idx[predicted_entity] in ans:
                     total_correct += 1
@@ -53,6 +88,7 @@ def evaluate_beamQA(data_path, device, model, entity2idx, rel2idx,hops,nx_graph_
         accuracy = total_correct / len(data)
         print('Hits@1 ',accuracy)
         return accuracy
+
 
 
 def train(model,data_loader,loss_func,loss_weights,optimizer,scheduler,batch_size,epoch,device):
