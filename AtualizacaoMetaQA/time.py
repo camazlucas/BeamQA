@@ -1,31 +1,34 @@
-while True:
+import beam_executor
+import predict_answer
+import generate_paths
+import time
 
-    question = input("Pergunta: ")
+question = input("Pergunta: ")
 
-    t0 = time.perf_counter()
+t0 = time.perf_counter()
 
-    head = extract_entity(question)
+paths, score_paths = generate_paths(question)
 
-    paths, scores = bart_generate(question)
+t1 = time.perf_counter()
 
-    t1 = time.perf_counter()
+candidate_paths, scores = beam_executor(model,
+                                        entity2idx,
+                                        rel2idx,
+                                        idx2entity,
+                                        nx_graph,
+                                        device)
 
-    answer, score = path_finder_rec(
-        head,
-        paths,
-        scores,
-        model,
-        entity2idx,
-        idx2entity,
-        rel2idx,
-        nx_graph,
-        device,
-        topk=5
-    )
+t2 = time.perf_counter()
 
-    t2 = time.perf_counter()
+answer, score = predict_answer(head,
+                                candidate_paths,
+                                scores,
+                                topk=5
+                                )
 
-    print("Resposta:", answer)
-    print("Tempo BART:", t1 - t0)
-    print("Tempo BeamQA:", t2 - t1)
-    print("Tempo Total:", t2 - t0)
+t3 = time.perf_counter()
+
+# print("Resposta:", answer)
+print("Tempo BART:", t1 - t0)
+print("Tempo BeamQA:", t2 - t1)
+print("Tempo Total:", t3 - t0)

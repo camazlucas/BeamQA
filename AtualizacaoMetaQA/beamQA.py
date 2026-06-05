@@ -28,14 +28,63 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
     edgeidx = torch.tensor([entity2idx[i[1]]
                             for i in nx_graph.out_edges(head, data='data')
                             if i[2] == rel and i[1] in entity2idx]).long().to(device)
+    
+
+    ######################## Alterações para saída de triplas completas
+    edge_triples = {}
+
+    for src, dst, relation in nx_graph.out_edges(
+        head,
+        data='data'
+    ):
+
+        if relation == rel and dst in entity2idx:
+
+            edge_triples[dst] = (
+                src,
+                relation,
+                dst
+            )
+    ########################
+
     ### set score of entities that have an edge with the head entity to 1
     scores.index_fill_(1, edgeidx, 1)
     scores.index_fill_(1, s, 0)
     sc, o = torch.topk(scores, topk, largest=True, dim=-1)  # index of highest-scoring objects
     ans = [idx2entity[ent] for ent in o.tolist()[0]]
-    answr_score = dict(zip(ans, sc.tolist()[0]))
+
+    ######################## Alterações para saída de triplas completas
+    # answr_score = dict(zip(ans, sc.tolist()[0]))
+    answr_score = []
+
+    for entity, score in zip(
+        ans,
+        sc.tolist()[0]
+    ):
+
+        triple = edge_triples.get(
+            entity,
+            (head, rel, entity)
+        )
+
+        answr_score.append(
+            (
+                entity,
+                score,
+                triple
+            )
+        )
+
+    # if retscore:
+    #     return [(k, v) for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
     if retscore:
-        return [(k, v) for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
+        return sorted(
+            answr_score,
+            key=lambda item: item[1],
+            reverse=True
+        )
+    ########################
+    
     return [k for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
 
 
