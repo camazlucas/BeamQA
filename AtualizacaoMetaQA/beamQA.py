@@ -84,7 +84,7 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
             reverse=True
         )
     ########################
-    
+
     return [k for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
 
 
@@ -94,9 +94,16 @@ def check_rec(prev_return, rel,head,topK,model,entity2idx,idx2entity,rel2idx,nx_
                                  for headname in list(zip(*prev_return))[0]):
         return [(None, None)]
     entity_score = []
+
+    ######################## Alterações para saída de triplas completas
     for prev_entity, prev_score in prev_return:
-        for entity, score in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
-            if entity !=  head: entity_score.append((entity, score * prev_score ))
+        # for entity, score in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
+            # if entity !=  head: entity_score.append((entity, score * prev_score ))
+        for entity, score, triple in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
+            if entity !=  head: entity_score.append((entity, score * prev_score, triple ))
+    
+    ########################
+
     return sorted(entity_score, key= lambda x: x[1], reverse=True)[:topK]
 
 
