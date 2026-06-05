@@ -164,12 +164,13 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
     max_score = 0
     predicted_entity = ''
     predicted_path = ''
+    best_triples = []
     for path,pscore in zip(chains,scorez):
         path = path.split()
         
         prev_return = [(headname, 1, [])]
         
-        best_triples = []
+        
         for j , path_i in enumerate(path):
             prev_return = check_rec(prev_return, path_i, headname, topk, model, entity2idx, idx2entity,
                                     rel2idx, nx_graph, device)
