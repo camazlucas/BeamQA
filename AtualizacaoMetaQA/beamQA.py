@@ -79,6 +79,11 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
             dtype=torch.float
         )
 
+        ans = [
+            idx2entity[ent]
+            for ent in o.tolist()[0]
+        ]
+
     else:
 
         return [(None, None, None)]
