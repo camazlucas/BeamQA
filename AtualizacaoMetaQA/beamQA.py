@@ -290,12 +290,14 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
         
         for j, path_i in enumerate(path):
 
-            print(
-                f"Hop {j+1}:",
-                path_i,
-                "Entrada:",
-                prev_return
-            )
+            ################### DEBBBUG ##############
+            # print(
+            #     f"Hop {j+1}:",
+            #     path_i,
+            #     "Entrada:",
+            #     prev_return
+            # )
+            #########################################
 
             prev_return = check_rec(
                 prev_return,
@@ -321,6 +323,8 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
             best_triples = triples
 
     return predicted_entity, max_score, best_triples
+
+
 
 def path_finder_candidates(
     headname,
