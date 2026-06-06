@@ -63,4 +63,4 @@ for i, candidate in enumerate(candidates):
 answer = predict_answer(candidates)
 
 print("\nResposta final:")
-print(answer)
+print(answer["answer"])
