@@ -36,17 +36,17 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
                             for i in nx_graph.out_edges(head, data='data')
                             if i[2] == rel and i[1] in entity2idx]).long().to(device)
     
-    ################ DEBUG ###################
-    print("HEAD:", head)
-    print("REL:", rel)
-    print("N vizinhos:", len(edgeidx))
+    # ################ DEBUG ###################
+    # print("HEAD:", head)
+    # print("REL:", rel)
+    # print("N vizinhos:", len(edgeidx))
 
-    if len(edgeidx) > 0:
-        print("Primeiros vizinhos:")
-        for idx in edgeidx[:10]:
-            print(idx2entity[idx.item()])   
+    # if len(edgeidx) > 0:
+    #     print("Primeiros vizinhos:")
+    #     for idx in edgeidx[:10]:
+    #         print(idx2entity[idx.item()])   
             
-    #########################################
+    # #########################################
 
     
     edge_triples = {}
