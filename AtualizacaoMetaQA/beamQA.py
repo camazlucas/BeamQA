@@ -321,3 +321,60 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
             best_triples = triples
 
     return predicted_entity, max_score, best_triples
+
+def path_finder_candidates(
+    headname,
+    chains,
+    scorez,
+    model,
+    entity2idx,
+    idx2entity,
+    rel2idx,
+    nx_graph,
+    device,
+    topk=10
+):
+
+    all_candidates = []
+
+    for path, pscore in zip(chains, scorez):
+
+        path = path.split()
+
+        prev_return = [(headname, 1, [])]
+
+        for path_i in path:
+
+            prev_return = check_rec(
+                prev_return,
+                path_i,
+                headname,
+                topk,
+                model,
+                entity2idx,
+                idx2entity,
+                rel2idx,
+                nx_graph,
+                device
+            )
+
+            if not prev_return:
+                break
+
+        if not prev_return:
+            continue
+
+        for entity, score, triples in prev_return:
+
+            all_candidates.append(
+                {
+                    "entity": entity,
+                    "beam_score": score,
+                    "path_score": pscore,
+                    "final_score": score * pscore,
+                    "triples": triples,
+                    "path": " ".join(path)
+                }
+            )
+
+    return all_candidates
