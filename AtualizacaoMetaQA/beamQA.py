@@ -131,18 +131,78 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
     return [k for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
 
 
-def check_rec(prev_return, rel,head,topK,model,entity2idx,idx2entity,rel2idx,nx_graph,device):
+# def check_rec(prev_return, rel,head,topK,model,entity2idx,idx2entity,rel2idx,nx_graph,device):
 
     
-    if rel not in rel2idx or any(headname not in entity2idx
-                                 for headname in list(zip(*prev_return))[0]):
-        return [(None, None, [])]
-    entity_score = []
-    for prev_entity, prev_score, prev_triples in prev_return:
-        for entity, score, triple in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
-            if entity !=  head: entity_score.append((entity, score * prev_score, prev_triples + [triple]))
+#     if rel not in rel2idx or any(headname not in entity2idx
+#                                  for headname in list(zip(*prev_return))[0]):
+#         return [(None, None, [])]
+#     entity_score = []
+#     for prev_entity, prev_score, prev_triples in prev_return:
+#         for entity, score, triple in check(prev_entity, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = topK, retscore = True):
+#             if entity !=  head: entity_score.append((entity, score * prev_score, prev_triples + [triple]))
 
-    return sorted(entity_score, key= lambda x: x[1], reverse=True)[:topK]
+#     return sorted(entity_score, key= lambda x: x[1], reverse=True)[:topK]
+
+def check_rec(
+    prev_return,
+    rel,
+    head,
+    topK,
+    model,
+    entity2idx,
+    idx2entity,
+    rel2idx,
+    nx_graph,
+    device
+):
+
+    if (
+        rel not in rel2idx
+        or any(
+            headname not in entity2idx
+            for headname in list(zip(*prev_return))[0]
+        )
+    ):
+        return []
+
+    entity_score = []
+
+    for prev_entity, prev_score, prev_triples in prev_return:
+
+        results = check(
+            prev_entity,
+            rel,
+            model,
+            rel2idx,
+            entity2idx,
+            idx2entity,
+            nx_graph,
+            device,
+            topk=topK,
+            retscore=True
+        )
+
+        for entity, score, triple in results:
+
+            if entity is None:
+                continue
+
+            if entity != head:
+
+                entity_score.append(
+                    (
+                        entity,
+                        score * prev_score,
+                        prev_triples + [triple]
+                    )
+                )
+
+    return sorted(
+        entity_score,
+        key=lambda x: x[1],
+        reverse=True
+    )[:topK]
 
 def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,nx_graph,device,topk=10):
     '''
