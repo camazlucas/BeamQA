@@ -64,31 +64,37 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
                 dst
             )
 
-    ############# DEBUG SUBSTITUIÇÃO #############
+    ############# SUBSTITUIÇÃO #############
     # scores.index_fill_(1, edgeidx, 1)
     # scores.index_fill_(1, s, 0)
     # sc, o = torch.topk(scores, topk, largest=True, dim=-1)  # index of highest-scoring objects
-    # ans = [idx2entity[ent] for ent in o.tolist()[0]]
+    
 
-    if len(edgeidx) > 0:
-
-        o = edgeidx.unsqueeze(0)
-
-        sc = torch.ones_like(
-            o,
-            dtype=torch.float
-        )
-
-        ans = [
-            idx2entity[ent]
-            for ent in o.tolist()[0]
-        ]
-
-    else:
-
-        return [(None, None, None)]
     ###############################################
+    
+    if len(edgeidx) == 0:
+        return [(None, None, None)]
 
+    scores_masked = torch.full_like(
+        scores,
+        -1e9
+    )
+
+    scores_masked[0, edgeidx] = scores[0, edgeidx]
+
+    k = min(
+        topk,
+        len(edgeidx)
+    )
+
+    sc, o = torch.topk(
+        scores_masked,
+        k,
+        largest=True,
+        dim=-1
+    )
+
+    ans = [idx2entity[ent] for ent in o.tolist()[0]]
 
     answr_score = []
 
@@ -128,8 +134,16 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
         )
 
 
-    return [k for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
-
+    # return [k for k, v in sorted(answr_score.items(), key=lambda item: item[1], reverse=True)]
+    return [
+        entity
+        for entity, score, triple
+        in sorted(
+            answr_score,
+            key=lambda x: x[1],
+            reverse=True
+        )
+    ]
 
 # def check_rec(prev_return, rel,head,topK,model,entity2idx,idx2entity,rel2idx,nx_graph,device):
 
@@ -263,7 +277,6 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
     '''
     max_score = 0
     predicted_entity = ''
-    predicted_path = ''
     best_triples = []
     for path,pscore in zip(chains,scorez):
         path = path.split()
@@ -295,25 +308,14 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
                 device
             )
 
-            print(
-                f"Hop {j+1}:",
-                path_i,
-                "Saída:",
-                prev_return
-            )
+        if not prev_return:
+            continue
 
-            if not prev_return:
-                print("CAMINHO MORTO")
-                break
+        entity, score, triples = prev_return[0]
 
-            if not prev_return:
-                continue
-
-            entity, score, triples = prev_return[0]
-
-            if entity and score * pscore > max_score:
-                predicted_entity = entity
-                max_score = score * pscore
-                best_triples = triples
+        if entity and score * pscore > max_score:
+            predicted_entity = entity
+            max_score = score * pscore
+            best_triples = triples
 
     return predicted_entity, max_score, best_triples

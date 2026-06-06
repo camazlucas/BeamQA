@@ -1,35 +1,37 @@
 from pykeen.triples import TriplesFactory
 from pykeen.pipeline import pipeline
+import networkx as nx
+import pickle
 
-tf = TriplesFactory.from_path("kb.tsv",
+tf = TriplesFactory.from_path("../MetaQA/kb.tsv",
                               create_inverse_triples=True)
-
-print("Triplas:", tf.num_triples)
-print("Entidades:", tf.num_entities)
-print("Relações:", tf.num_relations)
-
-training, testing, validation = tf.split(
-    ratios=(0.7, 0.15, 0.15),
-    random_state=42
-)
-
-result = pipeline(
-    training=training,
-    testing=testing,
-    validation=validation,
-    model="ComplEx",
-    model_kwargs={
-        "embedding_dim": 256
-    },
-    training_kwargs={
-        "num_epochs": 100,
-        "use_tqdm_batch": True
-    }
-)
-
-result.save_to_directory("new_complex_metaqa_100_inv")
-
-print("Treinamento concluído.")
+#
+#print("Triplas:", tf.num_triples)
+#print("Entidades:", tf.num_entities)
+#print("Relações:", tf.num_relations)
+#
+#training, testing, validation = tf.split(
+#    ratios=(0.7, 0.15, 0.15),
+#    random_state=42
+#)
+#
+#result = pipeline(
+#    training=training,
+#    testing=testing,
+#    validation=validation,
+#    model="ComplEx",
+#    model_kwargs={
+#        "embedding_dim": 256
+#    },
+#    training_kwargs={
+#        "num_epochs": 100,
+#        "use_tqdm_batch": True
+#    }
+#)
+#
+#result.save_to_directory("new_complex_metaqa_100_inv")
+#
+#print("Treinamento concluído.")
 
 # -------------------------
 # Construção do nx_graph
@@ -53,14 +55,22 @@ for h, r, t in tf.mapped_triples.tolist():
     relation = id_to_relation[r]
     tail = id_to_entity[t]
 
+    # tripla original
     G.add_edge(
         head,
         tail,
         data=relation
     )
 
+    # tripla inversa
+    G.add_edge(
+        tail,
+        head,
+        data=relation + "_inv"
+    )
+
 with open(
-    "complex_metaqa_100_inv/MetaQA_graph.pkl",
+    "new_complex_metaqa_100_inv/MetaQA_graph.pkl",
     "wb"
 ) as f:
 
