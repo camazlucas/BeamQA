@@ -26,6 +26,15 @@ nx_graph = load_graph(
     "../Data/Graph_data/MetaQA/MetaQA/MetaQA_graph.pkl"
 )
 
+print("\nArestas directed_by_inv de Steven Spielberg:")
+
+for u, v, r in nx_graph.out_edges(
+    "Steven Spielberg",
+    data="data"
+):
+    if r == "directed_by_inv":
+        print(v)
+
 print("\nArestas directed_by de Catch Me If You Can:")
 
 for u, v, r in nx_graph.out_edges(
