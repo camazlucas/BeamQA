@@ -2,6 +2,7 @@ from generate_paths import generate_paths
 from beamQA import path_finder_candidates
 from utils import get_embeddings, load_graph
 from Model import Model
+from predict_answer import predict_answer
 
 device = "cuda:0"
 
@@ -56,6 +57,10 @@ print("Número de candidatos:", len(candidates))
 
 for i, candidate in enumerate(candidates):
 
-    print("\nCandidato", i + 1)
-
+    print(f"\nCandidato {i+1}")
     print(candidate)
+
+answer = predict_answer(candidates)
+
+print("\nResposta final:")
+print(answer)
