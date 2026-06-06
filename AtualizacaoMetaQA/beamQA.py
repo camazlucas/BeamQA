@@ -47,7 +47,7 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
             print(idx2entity[idx.item()])   
             
     #########################################
-    
+
     
     edge_triples = {}
 
@@ -64,10 +64,26 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
                 dst
             )
 
-    scores.index_fill_(1, edgeidx, 1)
-    scores.index_fill_(1, s, 0)
-    sc, o = torch.topk(scores, topk, largest=True, dim=-1)  # index of highest-scoring objects
-    ans = [idx2entity[ent] for ent in o.tolist()[0]]
+    ############# DEBUG SUBSTITUIÇÃO #############
+    # scores.index_fill_(1, edgeidx, 1)
+    # scores.index_fill_(1, s, 0)
+    # sc, o = torch.topk(scores, topk, largest=True, dim=-1)  # index of highest-scoring objects
+    # ans = [idx2entity[ent] for ent in o.tolist()[0]]
+
+    if len(edgeidx) > 0:
+
+        o = edgeidx.unsqueeze(0)
+
+        sc = torch.ones_like(
+            o,
+            dtype=torch.float
+        )
+
+    else:
+
+        return [(None, None, None)]
+    ###############################################
+
 
     answr_score = []
 
