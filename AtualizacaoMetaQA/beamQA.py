@@ -170,7 +170,9 @@ def check_rec(
     nx_graph,
     device
 ):
-
+    if not prev_return:
+        return []
+    
     if (
         rel not in rel2idx
         or any(
