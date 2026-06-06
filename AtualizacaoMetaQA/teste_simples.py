@@ -1,5 +1,5 @@
 from generate_paths import generate_paths
-from beam_executor import execute_beam
+from beamQA import path_finder_candidates
 from utils import get_embeddings, load_graph
 from Model import Model
 
@@ -23,9 +23,8 @@ model = Model(
 ).to(device)
 
 nx_graph = load_graph(
-    "../Data/Graph_data/MetaQA/MetaQAProcess/MetaQA_graph.pkl"
+    "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl"
 )
-
 
 
 # carregar modelo e grafo
@@ -40,7 +39,7 @@ topk = 5
 
 print(sample)
 
-result = execute_beam(
+candidates = path_finder_candidates(
     head,
     sample["paths"],
     sample["scores"],
@@ -53,4 +52,10 @@ result = execute_beam(
     topk
 )
 
-print(result)
+print("Número de candidatos:", len(candidates))
+
+for i, candidate in enumerate(candidates):
+
+    print("\nCandidato", i + 1)
+
+    print(candidate)
