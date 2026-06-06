@@ -1,8 +1,16 @@
 def predict_answer(candidates):
 
-    max_score = 0
+    if not candidates:
+        return {
+            "answer": None,
+            "score": 0,
+            "triples": []
+        }
+
+    max_score = float("-inf")
     best_answer = None
-    best_triples = None
+    best_triples = []
+    best_path = None
 
     for candidate in candidates:
 
@@ -16,9 +24,11 @@ def predict_answer(candidates):
             max_score = final_score
             best_answer = candidate["entity"]
             best_triples = candidate["triples"]
+            best_path = candidate["path"]
 
     return {
         "answer": best_answer,
         "score": max_score,
-        "triples": best_triples
+        "triples": best_triples,
+        "path": best_path
     }
