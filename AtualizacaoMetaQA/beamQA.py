@@ -269,49 +269,51 @@ def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,
         path = path.split()
         
         prev_return = [(headname, 1, [])]
+
         
         
-    for j, path_i in enumerate(path):
+        
+        for j, path_i in enumerate(path):
 
-        print(
-            f"Hop {j+1}:",
-            path_i,
-            "Entrada:",
-            prev_return
-        )
+            print(
+                f"Hop {j+1}:",
+                path_i,
+                "Entrada:",
+                prev_return
+            )
 
-        prev_return = check_rec(
-            prev_return,
-            path_i,
-            headname,
-            topk,
-            model,
-            entity2idx,
-            idx2entity,
-            rel2idx,
-            nx_graph,
-            device
-        )
+            prev_return = check_rec(
+                prev_return,
+                path_i,
+                headname,
+                topk,
+                model,
+                entity2idx,
+                idx2entity,
+                rel2idx,
+                nx_graph,
+                device
+            )
 
-        print(
-            f"Hop {j+1}:",
-            path_i,
-            "Saída:",
-            prev_return
-        )
+            print(
+                f"Hop {j+1}:",
+                path_i,
+                "Saída:",
+                prev_return
+            )
 
-        if not prev_return:
-            print("CAMINHO MORTO")
-            break
+            if not prev_return:
+                print("CAMINHO MORTO")
+                break
 
-        if not prev_return:
-            continue
+            if not prev_return:
+                continue
 
-        entity, score, triples = prev_return[0]
+            entity, score, triples = prev_return[0]
 
-        if entity and score * pscore > max_score:
-            predicted_entity = entity
-            max_score = score * pscore
-            best_triples = triples
+            if entity and score * pscore > max_score:
+                predicted_entity = entity
+                max_score = score * pscore
+                best_triples = triples
 
     return predicted_entity, max_score, best_triples
