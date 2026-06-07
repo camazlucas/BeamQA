@@ -24,7 +24,7 @@ parser.add_argument(
 parser.add_argument(
     "--topk",
     type=int,
-    default=5
+    default=20
 )
 
 parser.add_argument(

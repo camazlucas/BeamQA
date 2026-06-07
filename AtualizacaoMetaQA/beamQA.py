@@ -264,7 +264,7 @@ def check_rec(
 
 
 ############### Versao DEBUG ######################
-def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,nx_graph,device,topk=10):
+def path_finder_rec(headname, chains,scorez,model,entity2idx,idx2entity,rel2idx,nx_graph,device,topk=20):
     '''
     :param headname: Head entity
     :param chains: list of paths
@@ -336,7 +336,7 @@ def path_finder_candidates(
     rel2idx,
     nx_graph,
     device,
-    topk=10
+    topk=20
 ):
 
     all_candidates = []
