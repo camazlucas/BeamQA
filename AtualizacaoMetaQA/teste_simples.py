@@ -38,29 +38,51 @@ head = "Catch Me If You Can"
 
 topk = 5
 
-print(sample)
+while True:
 
-candidates = path_finder_candidates(
-    head,
-    sample["paths"],
-    sample["scores"],
-    model,
-    entity2idx,
-    idx2entity,
-    rel2idx,
-    nx_graph,
-    device,
-    topk
-)
+    question = input("\nPergunta (ou 'sair'): ").strip()
 
-print("Número de candidatos:", len(candidates))
+    if question.lower() == "sair":
+        break
 
-for i, candidate in enumerate(candidates):
+    head = input("Head entity: ").strip()
 
-    print(f"\nCandidato {i+1}")
-    print(candidate)
+    with open(
+        "questions.txt",
+        "w",
+        encoding="utf-8"
+    ) as f:
 
-answer = predict_answer(candidates)
+        f.write(question + "\n")
 
-print("\nResposta final:")
-print(answer["answer"])
+    results = generate_paths("questions.txt")
+
+    sample = results[0]
+
+    candidates = path_finder_candidates(
+        head,
+        sample["paths"],
+        sample["scores"],
+        model,
+        entity2idx,
+        idx2entity,
+        rel2idx,
+        nx_graph,
+        device,
+        topk
+    )
+
+    answer = predict_answer(candidates)
+
+    print("\nResposta:")
+    print(answer["answer"])
+
+    print("\nScore:")
+    print(answer["score"])
+
+    print("\nPath:")
+    print(answer["path"])
+
+    print("\nTriples:")
+    for triple in answer["triples"]:
+        print(triple)
