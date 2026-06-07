@@ -152,12 +152,12 @@ with open(
         # --------------------------------------------------
 
         beam_paths = (
-            df_paths[line_id][1]
+            df_paths[line_id - 1][1]
             .split("|")
         )
 
         scores = ast.literal_eval(
-            df_paths[line_id][2]
+            df_paths[line_id - 1][2]
         )
 
         scores = [
