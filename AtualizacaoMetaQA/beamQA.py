@@ -70,7 +70,7 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
     # sc, o = torch.topk(scores, topk, largest=True, dim=-1)  # index of highest-scoring objects
     
 
-    ###############################################
+    
     
     if len(edgeidx) == 0:
         return [(None, None, None)]
@@ -93,6 +93,8 @@ def check(head, rel,model,rel2idx,entity2idx,idx2entity,nx_graph,device,topk = 2
         largest=True,
         dim=-1
     )
+
+    ###############################################
 
     ans = [idx2entity[ent] for ent in o.tolist()[0]]
 
@@ -368,17 +370,36 @@ def path_finder_candidates(
         if not prev_return:
             continue
 
-        for entity, score, triples in prev_return:
+        ################ Substituicao teste - original
 
-            all_candidates.append(
-                {
-                    "entity": entity,
-                    "beam_score": score,
-                    "path_score": pscore,
-                    "final_score": score * pscore,
-                    "triples": triples,
-                    "path": " ".join(path)
-                }
-            )
+        # for entity, score, triples in prev_return:
+
+        #     all_candidates.append(
+        #         {
+        #             "entity": entity,
+        #             "beam_score": score,
+        #             "path_score": pscore,
+        #             "final_score": score * pscore,
+        #             "triples": triples,
+        #             "path": " ".join(path)
+        #         }
+        #     )
+
+        ################ Novo 
+
+        entity, score, triples = prev_return[0]
+
+        all_candidates.append(
+            {
+                "entity": entity,
+                "beam_score": score,
+                "path_score": pscore,
+                "final_score": score * pscore,
+                "triples": triples,
+                "path": " ".join(path)
+            }
+        )
+
+        ####################################
 
     return all_candidates
