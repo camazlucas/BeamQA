@@ -18,7 +18,7 @@ model.eval()
 
 
 def generate_paths(
-    input_file,
+    question,
     num_beams=20,
     num_return_sequences=20,
     max_length=18
@@ -45,104 +45,85 @@ def generate_paths(
         "written_by_inv"
     }
 
-    with open(input_file, "r", encoding="utf-8") as f:
 
-        questions = [
-            line.strip()
-            for line in f
-            if line.strip()
-        ]
+    inputs = tokenizer(
+        question,
+        return_tensors="pt"
+    ).to(device)
 
-    results = []
+    outputs = model.generate(
+        **inputs,
+        max_length=max_length,
+        num_beams=num_beams,
+        num_return_sequences=num_return_sequences,
+        early_stopping=True,
+        output_scores=True,
+        return_dict_in_generate=True
+    )
 
-    for question in questions:
+    unique_paths = {}
 
-        inputs = tokenizer(
-            question,
-            return_tensors="pt"
-        ).to(device)
+    for output, score in zip(
+        outputs.sequences,
+        outputs.sequences_scores
+    ):
 
-        outputs = model.generate(
-            **inputs,
-            max_length=max_length,
-            num_beams=num_beams,
-            num_return_sequences=num_return_sequences,
-            early_stopping=True,
-            output_scores=True,
-            return_dict_in_generate=True
-        )
+        path = tokenizer.decode(
+            output,
+            skip_special_tokens=True
+        ).strip()
 
-        unique_paths = {}
+        relations = path.split()
 
-        for output, score in zip(
-            outputs.sequences,
-            outputs.sequences_scores
+        if not relations:
+            continue
+
+        if not all(
+            rel in valid_relations
+            for rel in relations
         ):
+             continue
 
-            path = tokenizer.decode(
-                output,
-                skip_special_tokens=True
-            ).strip()
+        if path not in unique_paths:
+            unique_paths[path] = score.item()
 
-            relations = path.split()
+    paths = list(unique_paths.keys())
 
-            if not relations:
-                continue
+    if len(unique_paths) > 0:
 
-            if not all(
-                rel in valid_relations
-                for rel in relations
-            ):
-                continue
+        scores = torch.softmax(
+            torch.tensor(
+                list(unique_paths.values())
+            ),
+            dim=0
+        ).tolist()
 
-            if path not in unique_paths:
-                unique_paths[path] = score.item()
+    else:
 
-        paths = list(unique_paths.keys())
+        scores = []
 
-        if len(unique_paths) > 0:
-
-            scores = torch.softmax(
-                torch.tensor(
-                    list(unique_paths.values())
-                ),
-                dim=0
-            ).tolist()
-
-        else:
-
-            scores = []
-
-        results.append(
-            {
-                "question": question,
-                "paths": paths,
-                "scores": scores
-            }
-        )
-
-    return results
+    return {
+        "question": question,
+        "paths": paths,
+        "scores": scores
+    }
 
 
 if __name__ == "__main__":
 
-    input_file = "questions.txt"
+    question = "the films that share directors with the film [Catch Me If You Can] were in which languages?"
 
-    results = generate_paths(input_file)
+    sample = generate_paths(question)
 
-    for sample in results:
+    print("\nPergunta:")
+    print(sample["question"])
 
-        print("\nPergunta:")
-        print(sample["question"])
+    print("\nCaminhos:")
 
-        print("\nCaminhos:")
+    for path, score in zip(
+        sample["paths"],
+        sample["scores"]
+    ):
 
-        for path, score in zip(
-            sample["paths"],
-            sample["scores"]
-        ):
-
-            print(path)
-            print(score)
-
-        print("-" * 80)
+        print(path)
+        print(score)

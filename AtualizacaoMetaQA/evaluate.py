@@ -8,20 +8,45 @@ from predict_answer import predict_answer
 
 from utils import get_embeddings, load_graph
 from Model import Model
+import argparse
 
+# ==========================================================
+# CONFIGURAÇÕES do Argparse
+# ==========================================================
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    "--test_file",
+    type=str,
+    required=True
+)
+
+parser.add_argument(
+    "--topk",
+    type=int,
+    default=5
+)
+
+parser.add_argument(
+    "--output_file",
+    type=str,
+    default=None
+)
 
 # ==========================================================
 # CONFIGURAÇÕES
 # ==========================================================
 
-TEST_FILE = "qa_test.txt"
+args = parser.parse_args()
+
+TEST_FILE = args.test_file
 
 device = "cuda:0"
 
 kg_model_path = "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/"
 kg_model_name = "trained_model.pkl"
 
-topk = 10
+topk = ars.topk
 
 
 # ==========================================================
@@ -132,19 +157,9 @@ with open(
 
         try:
 
-            with open(
-                "temp_question.txt",
-                "w",
-                encoding="utf-8"
-            ) as temp_file:
-
-                temp_file.write(question + "\n")
-
-            results = generate_paths(
-                "temp_question.txt"
+            sample = generate_paths(
+                question
             )
-
-            sample = results[0]
 
             candidates = path_finder_candidates(
                 head,
@@ -261,6 +276,11 @@ with open(
 
 total_time = time.time() - global_start
 
+if total_questions == 0:
+    raise RuntimeError(
+        "Nenhuma pergunta foi processada."
+    )
+
 hits1_score = (
     hits1 / total_questions
 )
@@ -326,3 +346,32 @@ if len(times) > 1:
         ),
         "s"
     )
+
+if args.output_file is not None:
+
+    import csv
+
+    with open(
+        args.output_file,
+        "w",
+        newline="",
+        encoding="utf-8"
+    ) as f:
+
+        writer = csv.DictWriter(
+            f,
+            fieldnames=[
+                "question",
+                "head",
+                "prediction",
+                "gold",
+                "correct",
+                "f1",
+                "time"
+            ]
+        )
+
+        writer.writeheader()
+
+        for row in results_log:
+            writer.writerow(row)
