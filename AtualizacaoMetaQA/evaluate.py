@@ -107,7 +107,13 @@ with open(
 
         if not line:
             continue
+        
+        ################## DEBUG ####################
+        print(repr(line))
+            break
+        #############################################
 
+        
         try:
 
             question, answers = line.split("\t")
