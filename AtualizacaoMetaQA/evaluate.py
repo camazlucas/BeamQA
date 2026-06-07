@@ -186,20 +186,20 @@ with open(
 
             pred_answer = prediction["answer"]
 
-            #################### DEBUG ######################
+            # #################### DEBUG ######################
 
-            print("\nPergunta:")
-            print(question)
+            # print("\nPergunta:")
+            # print(question)
 
-            print("\nGold:")
-            print(gold_answers)
+            # print("\nGold:")
+            # print(gold_answers)
 
-            print("\nPredição:")
-            print(pred_answer)
+            # print("\nPredição:")
+            # print(pred_answer)
 
-            break
+            # break
 
-            ##################################################
+            # ##################################################
 
         except Exception as e:
 
