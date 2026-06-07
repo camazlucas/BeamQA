@@ -46,7 +46,7 @@ device = "cuda:0"
 kg_model_path = "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/"
 kg_model_name = "trained_model.pkl"
 
-topk = ars.topk
+topk = args.topk
 
 
 # ==========================================================
@@ -179,6 +179,21 @@ with open(
             )
 
             pred_answer = prediction["answer"]
+
+            #################### DEBUG ######################
+
+            print("\nPergunta:")
+            print(question)
+
+            print("\nGold:")
+            print(gold_answers)
+
+            print("\nPredição:")
+            print(pred_answer)
+
+            break
+
+            ##################################################
 
         except Exception as e:
 
