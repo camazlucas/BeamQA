@@ -81,6 +81,8 @@ nx_graph = load_graph(
 
 hits1 = 0
 f1_sum = 0.0
+candidate_recall_sum = 0.0
+candidate_hits = 0
 
 times = []
 
@@ -185,6 +187,22 @@ with open(
             )
 
             pred_answer = prediction["answer"]
+
+            candidate_entities = {
+                candidate["entity"]
+                for candidate in candidates
+                if candidate["entity"] is not None
+            }
+
+            candidate_recall = (
+                len(candidate_entities & gold_answers)
+                / len(gold_answers)
+            )
+
+            candidate_recall_sum += candidate_recall
+
+            if len(candidate_entities & gold_answers) > 0:
+                candidate_hits += 1
 
             # #################### DEBUG ######################
 
@@ -310,6 +328,14 @@ mean_f1 = (
     f1_sum / total_questions
 )
 
+mean_candidate_recall = (
+    candidate_recall_sum / total_questions
+)
+
+candidate_hits_score = (
+    candidate_hits / total_questions
+)
+
 avg_time = (
     sum(times) / len(times)
 )
@@ -326,6 +352,16 @@ print(
 print(
     "Hits@1:",
     round(hits1_score, 4)
+)
+
+print(
+    "Candidate Hits:",
+    round(candidate_hits_score, 4)
+)
+
+print(
+    "Candidate Recall:",
+    round(mean_candidate_recall, 4)
 )
 
 print(
