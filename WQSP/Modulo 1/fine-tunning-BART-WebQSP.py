@@ -128,14 +128,14 @@ print("Vocabulário final:", len(tokenizer))
 def preprocess(examples):
 
     inputs = tokenizer(
-        examples["text"],
+        examples["target_text"],
         truncation=True,
         padding="max_length",
         max_length=128
     )
 
     targets = tokenizer(
-        examples["tag"],
+        examples["prop"],
         truncation=True,
         padding="max_length",
         max_length=32
