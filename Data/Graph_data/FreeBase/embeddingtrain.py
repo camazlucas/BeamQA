@@ -10,6 +10,9 @@ parser.add_argument("--kb", type=str, required=True,
 parser.add_argument("--output", type=str, required=True,
                     help="Diretório onde o kg será salvo")
 
+parser.add_argument("--embdim", type=str, required=True,
+                    help="Definicao do tamanho do embedding")
+
 args = parser.parse_args()
 
 tf = TriplesFactory.from_path(
@@ -32,7 +35,7 @@ result = pipeline(
     validation=validation,
     model="ComplEx",
     model_kwargs={
-        "embedding_dim": 256
+        "embedding_dim": arg.embdim
     },
     training_kwargs={
         "num_epochs": 100,
