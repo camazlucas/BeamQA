@@ -111,7 +111,7 @@ tokenizer = BartTokenizer.from_pretrained(
 
 relations = set()
 
-for tag in df["tag"]:
+for tag in df["prop"]:
     for rel in tag.split():
         relations.add(rel)
 
