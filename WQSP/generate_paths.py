@@ -5,7 +5,7 @@ from transformers import (
     BartForConditionalGeneration
 )
 
-MODEL_DIR = "./Modulo1/bart_metaqa_all_hops/final_model/"
+MODEL_DIR = "WebQSP/Modulo 1/Modelo1-BART/final_model/"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -23,28 +23,6 @@ def generate_paths(
     num_return_sequences=20,
     max_length=18
 ):
-
-    valid_relations = {
-        "directed_by",
-        "has_genre",
-        "has_imdb_rating",
-        "has_imdb_votes",
-        "has_tags",
-        "in_language",
-        "release_year",
-        "starred_actors",
-        "written_by",
-        "directed_by_inv",
-        "has_genre_inv",
-        "has_imdb_rating_inv",
-        "has_imdb_votes_inv",
-        "has_tags_inv",
-        "in_language_inv",
-        "release_year_inv",
-        "starred_actors_inv",
-        "written_by_inv"
-    }
-
 
     inputs = tokenizer(
         question,
@@ -77,12 +55,6 @@ def generate_paths(
 
         if not relations:
             continue
-
-        if not all(
-            rel in valid_relations
-            for rel in relations
-        ):
-             continue
 
         if path not in unique_paths:
             unique_paths[path] = score.item()
