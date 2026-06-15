@@ -111,7 +111,7 @@ tokenizer = BartTokenizer.from_pretrained(
 
 relations = set()
 
-for tag in df["prop"]:
+for tag in df["tag"]:
     for rel in tag.split():
         relations.add(rel)
 
@@ -128,14 +128,14 @@ print("Vocabulário final:", len(tokenizer))
 def preprocess(examples):
 
     inputs = tokenizer(
-        examples["target_text"],
+        examples["text"],
         truncation=True,
         padding="max_length",
         max_length=128
     )
 
     targets = tokenizer(
-        examples["prop"],
+        examples["tag"],
         truncation=True,
         padding="max_length",
         max_length=32
