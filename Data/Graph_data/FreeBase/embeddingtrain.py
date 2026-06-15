@@ -10,7 +10,7 @@ parser.add_argument("--kb", type=str, required=True,
 parser.add_argument("--output", type=str, required=True,
                     help="Diretório onde o kg será salvo")
 
-parser.add_argument("--embdim", type=str, required=True,
+parser.add_argument("--embdim", type=int, default=256,
                     help="Definicao do tamanho do embedding")
 
 args = parser.parse_args()
