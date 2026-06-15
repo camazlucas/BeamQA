@@ -35,7 +35,7 @@ result = pipeline(
     validation=validation,
     model="ComplEx",
     model_kwargs={
-        "embedding_dim": arg.embdim
+        "embedding_dim": args.embdim
     },
     training_kwargs={
         "num_epochs": 100,
