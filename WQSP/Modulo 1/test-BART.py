@@ -5,7 +5,7 @@ from transformers import (
     BartForConditionalGeneration
 )
 
-MODEL_DIR = "./Modelo1-BART"
+MODEL_DIR = "./Modelo1-BART/final_model"
 
 tokenizer = BartTokenizer.from_pretrained(MODEL_DIR)
 
