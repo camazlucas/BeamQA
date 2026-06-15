@@ -43,8 +43,8 @@ TEST_FILE = args.test_file
 
 device = "cuda:0"
 
-kg_model_path = "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/"
-kg_model_name = "trained_model.pkl"
+kg_model_path = "Data/Graph_data/FreeBase/complex_freebase_100_inv"
+kg_model_name = "complex_100_inv.pkl"
 
 topk = args.topk
 
@@ -71,7 +71,7 @@ model = Model(
 ).to(device)
 
 nx_graph = load_graph(
-    "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl"
+    "../Data/Graph_data/FreeBase/freebase_nxgraph.pkl"
 )
 
 
