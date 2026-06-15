@@ -14,7 +14,7 @@ args = parser.parse_args()
 
 tf = TriplesFactory.from_path(
     args.kb,
-    create_inverse_triples=True
+    create_inverse_triples=False
 )
 
 print("Triplas:", tf.num_triples)
@@ -36,7 +36,8 @@ result = pipeline(
     },
     training_kwargs={
         "num_epochs": 100,
-        "use_tqdm_batch": True
+        "use_tqdm_batch": True,
+        "batch_size": 128
     }
 )
 
