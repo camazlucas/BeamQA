@@ -5,7 +5,7 @@ from transformers import (
     BartForConditionalGeneration
 )
 
-MODEL_DIR = "WebQSP/Modulo 1/Modelo1-BART/final_model/"
+MODEL_DIR = "WQSP/Modulo 1/Modelo1-BART/final_model/"
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
