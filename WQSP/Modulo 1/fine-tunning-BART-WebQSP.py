@@ -73,7 +73,7 @@ print(
 # CONFIGURAÇÕES
 # =====================================================
 
-MODEL_NAME = "facebook/bart-large"
+MODEL_NAME = "facebook/bart-base"
 
 LEARNING_RATE = 5e-5
 
@@ -130,16 +130,28 @@ def preprocess(examples):
     inputs = tokenizer(
         examples["text"],
         truncation=True,
+        padding="max_length",
         max_length=128
     )
 
     targets = tokenizer(
         examples["tag"],
         truncation=True,
-        max_length=16
+        padding="max_length",
+        max_length=32
     )
 
-    inputs["labels"] = targets["input_ids"]
+    labels = targets["input_ids"]
+
+    labels = [
+        [
+            token if token != tokenizer.pad_token_id else -100
+            for token in seq
+        ]
+        for seq in labels
+    ]
+
+    inputs["labels"] = labels
 
     return inputs
 
@@ -171,10 +183,10 @@ model.resize_token_embeddings(
 # (como no BeamQA para WQSP)
 # =====================================================
 
-for param in model.get_encoder().parameters():
-    param.requires_grad = False
+# for param in model.get_encoder().parameters():
+#     param.requires_grad = False
 
-print("Encoder congelado.")
+# print("Encoder congelado.")
 
 # =====================================================
 # DATA COLLATOR
@@ -202,9 +214,13 @@ training_args = TrainingArguments(
 
     save_strategy="epoch",
 
-    save_total_limit=100,
+    save_total_limit=10,
 
     logging_steps=50,
+
+    logging_strategy="steps",
+
+    logging_first_step=True,
 
     report_to="none",
 
