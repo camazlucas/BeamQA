@@ -39,7 +39,7 @@ def load_rog_model(model_name):
 # GENERATE PATHS
 # ==========================================================
 
-def generate_paths(
+def generate_paths_rog(
     question,
     tokenizer,
     model,
@@ -96,6 +96,9 @@ def generate_paths(
             for rel in path.split("<SEP>")
             if rel.strip()
         ]
+
+        if len(relations) > 4:
+            continue
 
         path = " ".join(relations)
 
