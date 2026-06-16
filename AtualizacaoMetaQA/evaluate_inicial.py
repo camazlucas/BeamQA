@@ -2,11 +2,7 @@ import re
 import time
 import statistics
 
-from generate_paths import (
-    generate_paths,
-    load_bart_model,
-    METAQA_RELATIONS
-)
+from generate_paths import generate_paths
 from beamQA import path_finder_candidates
 from predict_answer import predict_answer
 
@@ -37,48 +33,18 @@ parser.add_argument(
     default=None
 )
 
-parser.add_argument(
-    "--bart_model_path",
-    type=str,
-    required=True
-)
-
-parser.add_argument(
-    "--use_relation_filter",
-    action="store_true"
-)
-
-parser.add_argument(
-    "--kg_model_path",
-    type=str,
-    required=True
-)
-
-parser.add_argument(
-    "--kg_model_name",
-    type=str,
-    default="trained_model.pkl"
-)
-
-parser.add_argument(
-    "--graph_file",
-    type=str,
-    required=True
-)
-
 # ==========================================================
 # CONFIGURAÇÕES
 # ==========================================================
 
 args = parser.parse_args()
 
-tokenizer, bart_model = load_bart_model(
-    args.bart_model_path
-)
-
 TEST_FILE = args.test_file
 
 device = "cuda:0"
+
+kg_model_path = "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/"
+kg_model_name = "trained_model.pkl"
 
 topk = args.topk
 
@@ -88,8 +54,8 @@ topk = args.topk
 # ==========================================================
 
 embedding_matrices, entity2idx, rel2idx, idx2rel = get_embeddings(
-    args.kg_model_path,
-    args.kg_model_name
+    kg_model_path,
+    kg_model_name
 )
 
 idx2entity = {
@@ -105,7 +71,7 @@ model = Model(
 ).to(device)
 
 nx_graph = load_graph(
-    args.graph_file
+    "../Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl"
 )
 
 
@@ -200,14 +166,7 @@ with open(
         try:
 
             sample = generate_paths(
-                question,
-                tokenizer,
-                bart_model,
-                valid_relations=(
-                    METAQA_RELATIONS
-                    if args.use_relation_filter
-                    else None
-                )
+                question
             )
 
             candidates = path_finder_candidates(
