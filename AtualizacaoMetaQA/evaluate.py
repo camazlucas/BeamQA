@@ -7,6 +7,10 @@ from generate_paths import (
     load_bart_model,
     METAQA_RELATIONS
 )
+from generate_paths_rog import (
+    generate_paths_rog,
+    load_rog_model
+)
 from beamQA import path_finder_candidates
 from predict_answer import predict_answer
 
@@ -38,7 +42,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--bart_model_path",
+    "--model_path",
     type=str,
     required=True
 )
@@ -66,15 +70,29 @@ parser.add_argument(
     required=True
 )
 
+parser.add_argument(
+    "--model_type",
+    choices=["bart", "rog"],
+    default="bart"
+)
+
 # ==========================================================
 # CONFIGURAÇÕES
 # ==========================================================
 
 args = parser.parse_args()
 
-tokenizer, bart_model = load_bart_model(
-    args.bart_model_path
-)
+if args.model_type == "bart":
+
+    tokenizer, path_model = load_bart_model(
+        args.model_path
+    )
+
+elif args.model_type == "rog":
+
+    tokenizer, path_model = load_rog_model(
+        args.model_path
+    )
 
 TEST_FILE = args.test_file
 
@@ -199,16 +217,26 @@ with open(
 
         try:
 
-            sample = generate_paths(
-                question,
-                tokenizer,
-                bart_model,
-                valid_relations=(
-                    METAQA_RELATIONS
-                    if args.use_relation_filter
-                    else None
+            if args.model_type == "bart":
+
+                sample = generate_paths(
+                    question,
+                    tokenizer,
+                    path_model,
+                    valid_relations=(
+                        METAQA_RELATIONS
+                        if args.use_relation_filter
+                        else None
+                    )
                 )
-            )
+
+            elif args.model_type == "rog":
+
+                sample = generate_paths_rog(
+                    question,
+                    tokenizer,
+                    path_model
+                )
 
             candidates = path_finder_candidates(
                 head,
