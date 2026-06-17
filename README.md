@@ -53,3 +53,15 @@ Code for generating paths and Synthetic questions can be found in BeamQA/Path_ge
 ## Results
 
 ## How to cite
+
+
+##### Métricas para o MetaQA
+
+ python AtualizacaoMetaQA/evaluate.py --test_file Data/QA_data/MetaQA/test_1hop.txt --output_file Data/Path_gen/outputs/path_generation_metaqa_1hop.txt --model_path AtualizacaoMetaQA/Modulo1/bart_metaqa_all_hops/final_model/ --use_relation_filter --kg_model_path Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv --graph_file Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl --model_type bart
+
+ python AtualizacaoMetaQA/evaluate.py --test_file Data/QA_data/MetaQA/test_2hop.txt --output_file Data/Path_gen/outputs/path_generation_metaqa_2hop.txt --model_path AtualizacaoMetaQA/Modulo1/bart_metaqa_all_hops/final_model/ --use_relation_filter --kg_model_path Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv --graph_file Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl --model_type bart
+ 
+ python AtualizacaoMetaQA/evaluate.py --test_file Data/QA_data/MetaQA/test_3hop.txt --output_file Data/Path_gen/outputs/path_generation_metaqa_3hop.txt --model_path AtualizacaoMetaQA/Modulo1/bart_metaqa_all_hops/final_model/ --use_relation_filter --kg_model_path Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv --graph_file Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl --model_type bart
+
+
+
