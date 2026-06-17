@@ -5,6 +5,10 @@ from transformers import (
     AutoModelForCausalLM
 )
 
+from transformers import logging
+
+logging.set_verbosity_error()
+
 device = (
     "cuda"
     if torch.cuda.is_available()
@@ -156,6 +160,17 @@ if __name__ == "__main__":
         tokenizer,
         model
     )
+
+    ######################################### DEBUG ##########################
+    if total_questions < 5:
+        print("\nPergunta:")
+        print(question)
+
+        print("\nPaths:")
+        for p, s in zip(sample["paths"][:10], sample["scores"][:10]):
+            print(f"{s:.4f} | {p}")
+    ##########################################################################
+
 
     print("\nPergunta:")
     print(sample["question"])
