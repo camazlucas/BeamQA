@@ -101,8 +101,8 @@ def generate_paths_rog(
             if rel.strip()
         ]
 
-        if len(relations) > 4:
-            continue
+        if len(relations) > 2:
+            relations = relations[:2]
 
         path = " ".join(relations)
 
