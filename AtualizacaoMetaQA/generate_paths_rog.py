@@ -162,13 +162,19 @@ if __name__ == "__main__":
     )
 
     ######################################### DEBUG ##########################
-    if total_questions < 5:
-        print("\nPergunta:")
-        print(question)
+    print("\n====================")
+    print("PERGUNTA")
+    print(question)
 
-        print("\nPaths:")
-        for p, s in zip(sample["paths"][:10], sample["scores"][:10]):
-            print(f"{s:.4f} | {p}")
+    print("\nPATHS")
+
+    for p, s in zip(
+        sample["paths"][:10],
+        sample["scores"][:10]
+    ):
+        print(f"{s:.4f} | {p}")
+
+    print("====================\n")
     ##########################################################################
 
 
