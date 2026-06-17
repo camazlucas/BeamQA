@@ -97,12 +97,34 @@ from generate_paths_rog import (
     load_rog_model
 )
 
+from utils import get_embeddings
+
 # ==========================================
 # MODELOS
 # ==========================================
 
 BART_MODEL = "WQSP/Modulo 1/Modelo1-BART/final_model"
 ROG_MODEL = "Path_generation/RoG"
+
+KG_MODEL_PATH = "Data/Graph_data/FreeBase/complex_freebase_64_inv"
+KG_MODEL_NAME = "trained_model.pkl"
+
+# ==========================================
+# RELAÇÕES VÁLIDAS
+# ==========================================
+
+_, _, rel2idx, _ = get_embeddings(
+    KG_MODEL_PATH,
+    KG_MODEL_NAME
+)
+
+valid_relations = set(
+    rel2idx.keys()
+)
+
+print(
+    f"Relações válidas: {len(valid_relations)}"
+)
 
 # ==========================================
 # CARREGAR
@@ -164,7 +186,12 @@ for question in questions:
     rog_result = generate_paths_rog(
         question,
         rog_tokenizer,
-        rog_model
+        rog_model,
+        valid_relations=valid_relations
+    )
+
+    print(
+        f"Caminhos válidos: {len(rog_result['paths'])}"
     )
 
     for path, score in zip(
