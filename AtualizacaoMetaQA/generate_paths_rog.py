@@ -89,6 +89,11 @@ def generate_paths_rog(
             skip_special_tokens=True
         ).strip()
 
+        ############################ DEBUG ##################
+        print("\nRAW:")
+        print(repr(path))
+        #####################################################
+
         path = path.replace("</PATH>", "")
         path = path.strip()
 
