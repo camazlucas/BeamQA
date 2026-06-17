@@ -155,27 +155,14 @@ if __name__ == "__main__":
         "were in which languages?"
     )
 
+
     sample = generate_paths(
         question,
         tokenizer,
         model
     )
 
-    ######################################### DEBUG ##########################
-    print("\n====================")
-    print("PERGUNTA")
-    print(question)
 
-    print("\nPATHS")
-
-    for p, s in zip(
-        sample["paths"][:10],
-        sample["scores"][:10]
-    ):
-        print(f"{s:.4f} | {p}")
-
-    print("====================\n")
-    ##########################################################################
 
 
     print("\nPergunta:")

@@ -238,6 +238,16 @@ with open(
                     path_model
                 )
 
+                ################################## DEBUG ###################
+                if total_questions < 5:
+                    print("\nPergunta:")
+                    print(question)
+
+                    print("\nPaths:")
+                    for p, s in zip(sample["paths"][:10], sample["scores"][:10]):
+                        print(f"{s:.4f} | {p}")
+                ##############################################################
+
             candidates = path_finder_candidates(
                 head,
                 sample["paths"],
