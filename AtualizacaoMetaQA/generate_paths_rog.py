@@ -47,6 +47,7 @@ def generate_paths_rog(
     question,
     tokenizer,
     model,
+    valid_relations=None,
     num_beams=20,
     num_return_sequences=20,
     max_new_tokens=48
@@ -74,6 +75,8 @@ def generate_paths_rog(
     )
 
     unique_paths = {}
+
+    invalid_count = 0
 
     for output, score in zip(
         outputs.sequences,
@@ -104,6 +107,15 @@ def generate_paths_rog(
         if len(relations) > 2:
             relations = relations[:2]
 
+        if valid_relations is not None:
+
+            if not all(
+                rel in valid_relations
+                for rel in relations
+            ):
+                invalid_count += 1
+                continue
+
         path = " ".join(relations)
 
         if path not in unique_paths:
@@ -128,6 +140,10 @@ def generate_paths_rog(
     else:
 
         scores = []
+
+    print(
+        f"Caminhos descartados: {invalid_count}"
+    )
 
     return {
 
