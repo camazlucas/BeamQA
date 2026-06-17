@@ -109,10 +109,17 @@ def generate_paths_rog(
 
         if valid_relations is not None:
 
-            if not all(
-                rel in valid_relations
+            missing = [
+                rel
                 for rel in relations
-            ):
+                if rel not in valid_relations
+            ]
+
+            if missing:
+
+                print("\nINVÁLIDAS:")
+                print(missing)
+
                 invalid_count += 1
                 continue
 
