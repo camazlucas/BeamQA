@@ -498,31 +498,31 @@ if len(times) > 1:
         "s"
     )
 
-if args.output_file is not None:
+# if args.output_file is not None:
 
-    import csv
+#     import csv
 
-    with open(
-        args.output_file,
-        "w",
-        newline="",
-        encoding="utf-8"
-    ) as f:
+#     with open(
+#         args.output_file,
+#         "w",
+#         newline="",
+#         encoding="utf-8"
+#     ) as f:
 
-        writer = csv.DictWriter(
-            f,
-            fieldnames=[
-                "question",
-                "head",
-                "prediction",
-                "gold",
-                "correct",
-                "f1",
-                "time"
-            ]
-        )
+#         writer = csv.DictWriter(
+#             f,
+#             fieldnames=[
+#                 "question",
+#                 "head",
+#                 "prediction",
+#                 "gold",
+#                 "correct",
+#                 "f1",
+#                 "time"
+#             ]
+#         )
 
-        writer.writeheader()
+#         writer.writeheader()
 
-        for row in results_log:
-            writer.writerow(row)
+#         for row in results_log:
+#             writer.writerow(row)
