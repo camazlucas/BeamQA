@@ -119,20 +119,15 @@ Answer:
 
 def parse_response(text):
 
-    lines = []
+    text = text.replace("\n", ",")
 
-    for line in text.split("\n"):
+    answers = [
+        x.strip()
+        for x in text.split(",")
+        if x.strip()
+    ]
 
-        line = line.strip()
-
-        if not line:
-            continue
-
-        line = line.lstrip("-•* ")
-
-        lines.append(line)
-
-    return lines
+    return answers
 
 # ==========================================================
 # INFERENCE
