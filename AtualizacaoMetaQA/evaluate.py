@@ -251,6 +251,12 @@ with open(
                 topk
             )
 
+            ################################### DEBUG
+
+            print(candidates[0]["triples"])
+
+            #############################################
+
             prediction = predict_answer(
                 candidates
             )
