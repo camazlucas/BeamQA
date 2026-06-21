@@ -1,6 +1,7 @@
 import re
 import time
 import statistics
+import json
 
 from generate_paths import (
     generate_paths,
@@ -142,6 +143,10 @@ total_questions = 0
 
 results_log = []
 
+########################################### FOR JSON FILE
+all_questions = []
+#########################################################
+
 
 # ==========================================================
 # AVALIAÇÃO
@@ -161,13 +166,7 @@ with open(
 
         if not line:
             continue
-        
-        # ################## DEBUG ####################
-        # print(repr(line))
-        # break
-        # #############################################
 
-        
         try:
 
             question, answers, _ = line.split("\t")
@@ -251,10 +250,31 @@ with open(
                 topk
             )
 
-################################################# DEBUG
-            print(candidates)
+################################################# FOR JSON FILE
+            question_result = {
+                "question": question,
+                "head_entity": head,
+                "gold_answers": list(gold_answers),
+                "candidate_paths": []
+            }
 
-            break
+            for candidate in candidates:
+
+                question_result["candidate_paths"].append(
+                    {
+                        "triples": [
+                            list(triple)
+                            for triple in candidate["triples"]
+                        ],
+                        "final_score": float(
+                            candidate["final_score"]
+                        )
+                    }
+                )
+
+            all_questions.append(
+                question_result
+            )
 #######################################################
 
             prediction = predict_answer(
@@ -278,21 +298,6 @@ with open(
 
             if len(candidate_entities & gold_answers) > 0:
                 candidate_hits += 1
-
-            # #################### DEBUG ######################
-
-            # print("\nPergunta:")
-            # print(question)
-
-            # print("\nGold:")
-            # print(gold_answers)
-
-            # print("\nPredição:")
-            # print(pred_answer)
-
-            # break
-
-            # ##################################################
 
         except Exception as e:
 
@@ -383,6 +388,20 @@ with open(
                 f"Processadas {total_questions} perguntas"
             )
 
+################################################## FOR JSON FILE
+with open(
+    args.output_file,
+    "w",
+    encoding="utf-8"
+) as f:
+
+    json.dump(
+        all_questions,
+        f,
+        ensure_ascii=False,
+        indent=2
+    )
+################################################
 
 # ==========================================================
 # RESULTADOS FINAIS
