@@ -78,3 +78,11 @@ Code for generating paths and Synthetic questions can be found in BeamQA/Path_ge
 #### Predicao com o Llama BeamQA
 
 python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/sample.json --output_path "../../Resultados/BeamQALLM/sample.json"
+
+python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/path_generation_metaqa_1hop.json --output_path "../../Resultados/BeamQALLM/metaqa_1hop.json"
+
+python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/path_generation_metaqa_2hop.json --output_path "../../Resultados/BeamQALLM/metaqa_2hop.json"
+
+python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/path_generation_metaqa_3hop.json --output_path "../../Resultados/BeamQALLM/metaqa_3hop.json"
+
+python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/path_generation_wqsp.json --output_path "../../Resultados/BeamQALLM/wqsp.json"
