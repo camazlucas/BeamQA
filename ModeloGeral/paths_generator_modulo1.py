@@ -197,9 +197,7 @@ if __name__ == "__main__":
     model_type = "bart"
 
     MODEL_DIR = (
-        "./Modulo1/"
-        "bart_metaqa_all_hops/"
-        "final_model/"
+        "../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/"
     )
 
     tokenizer, model = load_model(
