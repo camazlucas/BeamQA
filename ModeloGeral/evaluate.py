@@ -3,14 +3,10 @@ import time
 import statistics
 import json
 
-from generate_paths import (
+from Métodos.BeamQA.ModeloGeral.paths_generator_modulo1 import (
     generate_paths,
-    load_bart_model,
+    load_model,
     METAQA_RELATIONS
-)
-from generate_paths_rog import (
-    generate_paths_rog,
-    load_rog_model
 )
 from beamQA import path_finder_candidates
 from predict_answer import predict_answer
@@ -85,13 +81,7 @@ args = parser.parse_args()
 
 if args.model_type == "bart":
 
-    tokenizer, path_model = load_bart_model(
-        args.model_path
-    )
-
-elif args.model_type == "rog":
-
-    tokenizer, path_model = load_rog_model(
+    tokenizer, path_model = load_model(
         args.model_path
     )
 
@@ -497,32 +487,3 @@ if len(times) > 1:
         ),
         "s"
     )
-
-# if args.output_file is not None:
-
-#     import csv
-
-#     with open(
-#         args.output_file,
-#         "w",
-#         newline="",
-#         encoding="utf-8"
-#     ) as f:
-
-#         writer = csv.DictWriter(
-#             f,
-#             fieldnames=[
-#                 "question",
-#                 "head",
-#                 "prediction",
-#                 "gold",
-#                 "correct",
-#                 "f1",
-#                 "time"
-#             ]
-#         )
-
-#         writer.writeheader()
-
-#         for row in results_log:
-#             writer.writerow(row)

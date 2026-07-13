@@ -42,28 +42,36 @@ METAQA_RELATIONS = {
 # LOAD MODEL
 # ==========================================================
 
-def load_bart_model(model_dir):
+def load_model(model_dir, model_type):
 
-    tokenizer = BartTokenizer.from_pretrained(
-        model_dir
-    )
+    if model_type == "bart":
 
-    model = BartForConditionalGeneration.from_pretrained(
-        model_dir
-    )
+        tokenizer = BartTokenizer.from_pretrained(
+            model_dir
+        )
 
-    model.to(device)
+        model = BartForConditionalGeneration.from_pretrained(
+            model_dir
+        )
 
-    model.eval()
+        model.to(device)
 
-    return tokenizer, model
+        model.eval()
+
+        return tokenizer, model
+    
+    else: 
+
+        raise ValueError(
+            f"Modelo '{model_type}' não suportado."
+        )
 
 
 # ==========================================================
-# GENERATE PATHS
+# IMPLEMENTAÇÕES DOS MODELOS
 # ==========================================================
 
-def generate_paths(
+def _generate_bart(
     question,
     tokenizer,
     model,
@@ -147,6 +155,38 @@ def generate_paths(
         "scores": scores
     }
 
+# ==========================================================
+# GENERATE PATHS
+# ==========================================================
+
+def generate_paths(
+    question,
+    tokenizer,
+    model,
+    model_type,
+    valid_relations=None,
+    num_beams=20,
+    num_return_sequences=20,
+    max_length=18
+):
+
+    if model_type == "bart":
+
+        return _generate_bart(
+            question,
+            tokenizer,
+            model,
+            valid_relations=valid_relations,
+            num_beams=num_beams,
+            num_return_sequences=num_return_sequences,
+            max_length=max_length
+        )
+
+    else:
+
+        raise ValueError(
+            f"Modelo '{model_type}' não suportado."
+        )
 
 # ==========================================================
 # TESTE LOCAL
@@ -154,14 +194,17 @@ def generate_paths(
 
 if __name__ == "__main__":
 
+    model_type = "bart"
+
     MODEL_DIR = (
         "./Modulo1/"
         "bart_metaqa_all_hops/"
         "final_model/"
     )
 
-    tokenizer, model = load_bart_model(
-        MODEL_DIR
+    tokenizer, model = load_model(
+        MODEL_DIR,
+        model_type
     )
 
     question = (
@@ -174,6 +217,7 @@ if __name__ == "__main__":
         question,
         tokenizer,
         model,
+        model_type,
         valid_relations=METAQA_RELATIONS
     )
 
