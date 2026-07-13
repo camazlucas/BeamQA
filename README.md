@@ -63,6 +63,8 @@ Code for generating paths and Synthetic questions can be found in BeamQA/Path_ge
  
  python AtualizacaoMetaQA/evaluate.py --test_file Data/QA_data/MetaQA/test_3hop.txt --output_file Data/Path_gen/outputs/path_generation_metaqa_3hop.txt --model_path AtualizacaoMetaQA/Modulo1/bart_metaqa_all_hops/final_model/ --use_relation_filter --kg_model_path Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv --graph_file Data/Graph_data/MetaQA/MetaQAProcess/new_complex_metaqa_100_inv/MetaQA_graph.pkl --model_type bart
 
+ python ModeloGeral/evaluate.py --test_file ../../Dataset/QA_Data/MetaQA_BeamQA/test_3hop.txt --output_file Data/Testes/path_generation_metaqa_3hop.txt --model_path ../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/ --use_relation_filter --kg_model_path ../../Dataset/Graph_Data/MetaQA_ComplEx/new_complex_metaqa_100_inv --graph_file ../../Dataset/Graph_Data/MetaQA_ComplEx/new_complex_metaqa_100_inv/MetaQA_graph.pkl --model_type bart
+
 
 ##### Gerador de JSON
 
@@ -86,3 +88,15 @@ python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG
 python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/path_generation_metaqa_3hop.json --output_path "../../Resultados/BeamQALLM/metaqa_3hop.json"
 
 python "Modulo2/rog_llama_predict_beamQA.py" --model_path "../../Dataset/LLM/RoG/" --json_path Data/Path_gen/outputs/path_generation_wqsp.json --output_path "../../Resultados/BeamQALLM/wqsp.json"
+
+
+#### Novo Caminho pós reorganizacao global do dataset
+
+ python ModeloGeral/evaluate.py 
+ --test_file ../../Dataset/QA_Data/MetaQA_BeamQA/test_3hop.txt 
+ --output_file Data/Testes/path_generation_metaqa_3hop.txt 
+ --model_path ../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/ 
+ --use_relation_filter 
+ --kg_model_path ../../Dataset/Graph_Data/MetaQA_ComplEx/new_complex_metaqa_100_inv 
+ --graph_file ../../Dataset/Graph_Data/MetaQA_ComplEx/new_complex_metaqa_100_inv/MetaQA_graph.pkl 
+ --model_type bart
