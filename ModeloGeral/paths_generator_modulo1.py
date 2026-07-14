@@ -94,7 +94,8 @@ def _generate_bart(
         num_return_sequences=num_return_sequences,
         early_stopping=True,
         output_scores=True,
-        return_dict_in_generate=True
+        return_dict_in_generate=True,
+        skip_special_tokens = True
     )
 
     unique_paths = {}
@@ -106,7 +107,7 @@ def _generate_bart(
 
         path = tokenizer.decode(
             output,
-            skip_special_tokens=True
+            skip_special_tokens = skip_special_tokens
         ).strip()
 
         relations = path.split()
@@ -168,7 +169,8 @@ def generate_paths(
     valid_relations=None,
     num_beams=20,
     num_return_sequences=20,
-    max_length=18
+    max_length=18,
+    skip_special_tokens = True
 ):
 
     if model_type == "bart":
@@ -180,7 +182,8 @@ def generate_paths(
             valid_relations=valid_relations,
             num_beams=num_beams,
             num_return_sequences=num_return_sequences,
-            max_length=max_length
+            max_length=max_length,
+            skip_special_tokens=skip_special_tokens
         )
 
     else:
@@ -242,6 +245,11 @@ if __name__ == "__main__":
         action="store_true"
     )
 
+    parser.add_argument(
+        "--show_special_tokens",
+        action="store_true"
+    )
+
     args = parser.parse_args()
     
 
@@ -262,7 +270,8 @@ if __name__ == "__main__":
         ),
         num_beams=args.num_beams,
         num_return_sequences=args.num_return_sequences,
-        max_length=args.max_length
+        max_length=args.max_length,
+        skip_special_tokens =not args.show_special_tokens
     )
 
     print("\nPergunta:")
