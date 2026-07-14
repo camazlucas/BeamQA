@@ -200,55 +200,21 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "--model_type",
-        type=str,
-        default="bart"
-    )
+    parser.add_argument( "--model_type", type=str, default="bart")
 
-    parser.add_argument(
-        "--model_dir",
-        type=str,
-        default="../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/"
-    )
+    parser.add_argument("--model_dir", type=str, default="../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/")
 
-    parser.add_argument(
-        "--question",
-        type=str,
-        default=(
-            "the films that share directors "
-            "with the film [Catch Me If You Can] "
-            "were in which languages?"
-        )
-    )
+    parser.add_argument("--question", type=str, default=("the films that share directors with the film [Catch Me If You Can] were in which languages?"))
 
-    parser.add_argument(
-        "--num_beams",
-        type=int,
-        default=20
-    )
+    parser.add_argument("--num_beams", type=int, default=20)
 
-    parser.add_argument(
-        "--num_return_sequences",
-        type=int,
-        default=20
-    )
+    parser.add_argument("--num_return_sequences", type=int, default=20)
 
-    parser.add_argument(
-        "--max_length",
-        type=int,
-        default=18
-    )
+    parser.add_argument("--max_length", type=int, default=18)
 
-    parser.add_argument(
-        "--use_relation_filter",
-        action="store_true"
-    )
+    parser.add_argument("--use_relation_filter", action="store_true")
 
-    parser.add_argument(
-        "--show_special_tokens",
-        action="store_true"
-    )
+    parser.add_argument("--show_special_tokens", action="store_true")
 
     args = parser.parse_args()
     
