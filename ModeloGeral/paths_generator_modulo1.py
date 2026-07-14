@@ -96,7 +96,6 @@ def _generate_bart(
         early_stopping=True,
         output_scores=True,
         return_dict_in_generate=True,
-        skip_special_tokens = True
     )
 
     unique_paths = {}
