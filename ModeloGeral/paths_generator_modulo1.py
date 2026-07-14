@@ -79,7 +79,8 @@ def _generate_bart(
     valid_relations,
     num_beams,
     num_return_sequences,
-    max_length
+    max_length,
+    skip_special_tokens
 ):
 
     inputs = tokenizer(
