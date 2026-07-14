@@ -75,10 +75,10 @@ def _generate_bart(
     question,
     tokenizer,
     model,
-    valid_relations=None,
-    num_beams=20,
-    num_return_sequences=20,
-    max_length=18
+    valid_relations,
+    num_beams,
+    num_return_sequences,
+    max_length
 ):
 
     inputs = tokenizer(
@@ -216,7 +216,7 @@ if __name__ == "__main__":
         tokenizer,
         model,
         model_type,
-        valid_relations=METAQA_RELATIONS
+        valid_relations=None
     )
 
     print("\nPergunta:")
