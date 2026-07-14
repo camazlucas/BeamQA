@@ -20,58 +20,23 @@ import argparse
 # ==========================================================
 parser = argparse.ArgumentParser()
 
-parser.add_argument(
-    "--test_file",
-    type=str,
-    required=True
-)
+parser.add_argument("--test_file", type=str, required=True)
 
-parser.add_argument(
-    "--topk",
-    type=int,
-    default=20
-)
+parser.add_argument("--topk", type=int, default=20)
 
-parser.add_argument(
-    "--output_file",
-    type=str,
-    default=None
-)
+parser.add_argument("--output_file", type=str, default=None)
 
-parser.add_argument(
-    "--model_path",
-    type=str,
-    required=True
-)
+parser.add_argument("--model_path", type=str, required=True)
 
-parser.add_argument(
-    "--use_relation_filter",
-    action="store_true"
-)
+parser.add_argument("--use_relation_filter", action="store_true")
 
-parser.add_argument(
-    "--kg_model_path",
-    type=str,
-    required=True
-)
+parser.add_argument("--kg_model_path", type=str, required=True)
 
-parser.add_argument(
-    "--kg_model_name",
-    type=str,
-    default="trained_model.pkl"
-)
+parser.add_argument("--kg_model_name", type=str, default="trained_model.pkl")
 
-parser.add_argument(
-    "--graph_file",
-    type=str,
-    required=True
-)
+parser.add_argument("--graph_file", type=str, required=True)
 
-parser.add_argument(
-    "--model_type",
-    choices=["bart", "rog"],
-    default="bart"
-)
+parser.add_argument("--model_type", choices=["bart", "rog"], default="bart")
 
 # ==========================================================
 # CONFIGURAÇÕES
