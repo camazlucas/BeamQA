@@ -1,4 +1,5 @@
 import torch
+import argparse
 
 from transformers import (
     BartTokenizer,
@@ -194,29 +195,74 @@ def generate_paths(
 
 if __name__ == "__main__":
 
-    model_type = "bart"
+    parser = argparse.ArgumentParser()
 
-    MODEL_DIR = (
-        "../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/"
+    parser.add_argument(
+        "--model_type",
+        type=str,
+        default="bart"
     )
+
+    parser.add_argument(
+        "--model_dir",
+        type=str,
+        default="../../Dataset/LLM_Data/BART_MetaQA/bart_metaqa_all_hops/final_model/"
+    )
+
+    parser.add_argument(
+        "--question",
+        type=str,
+        default=(
+            "the films that share directors "
+            "with the film [Catch Me If You Can] "
+            "were in which languages?"
+        )
+    )
+
+    parser.add_argument(
+        "--num_beams",
+        type=int,
+        default=20
+    )
+
+    parser.add_argument(
+        "--num_return_sequences",
+        type=int,
+        default=20
+    )
+
+    parser.add_argument(
+        "--max_length",
+        type=int,
+        default=18
+    )
+
+    parser.add_argument(
+        "--use_relation_filter",
+        action="store_true"
+    )
+
+    args = parser.parse_args()
+    
 
     tokenizer, model = load_model(
-        MODEL_DIR,
-        model_type
-    )
-
-    question = (
-        "the films that share directors "
-        "with the film [Catch Me If You Can] "
-        "were in which languages?"
+        args.model_dir,
+        args.model_type
     )
 
     sample = generate_paths(
-        question,
+        args.question,
         tokenizer,
         model,
-        model_type,
-        valid_relations=None
+        args.model_type,
+        valid_relations=(
+            METAQA_RELATIONS
+            if args.use_relation_filter
+            else None
+        ),
+        num_beams=args.num_beams,
+        num_return_sequences=args.num_return_sequences,
+        max_length=args.max_length
     )
 
     print("\nPergunta:")
