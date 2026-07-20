@@ -193,13 +193,24 @@ hits = 0
 
 results = []
 
+empty_candidate_paths = 0
+
 for sample in tqdm(dataset):
 
     start_time = time.time()
 
-    predicted_answers, raw_response = predict(
-        sample
-    )
+    if len(sample["candidate_paths"]) == 0:
+
+        empty_candidate_paths += 1
+
+        predicted_answers = []
+        raw_response = ""
+
+    else:
+
+        predicted_answers, raw_response = predict(
+            sample
+        )
 
     elapsed = time.time() - start_time
 
@@ -331,6 +342,7 @@ print(f"Precision: {precision_avg:.4f}")
 print(f"Recall: {recall_avg:.4f}")
 print(f"F1: {f1_avg:.4f}")
 print("=" * 60)
+print(f"Perguntas sem candidate paths: {empty_candidate_paths}")
 
 print(f"Tempo total: {total_time:.2f} s")
 print(f"Tempo médio: {avg_time:.4f} s")
