@@ -175,6 +175,8 @@ with open(
 
 hits = 0
 
+hitsn = 0
+
 results = []
 
 empty_candidate_paths = 0
@@ -225,6 +227,9 @@ for sample in tqdm(dataset):
         predicted_set &
         gold_answers
     )
+
+    if len(intersection) > 0:
+        hitsn += 1
 
     if first_prediction in gold_answers:
         hits += 1
@@ -286,6 +291,10 @@ hits1 = hits / len(dataset)
 
 hits1void = hits / (len(dataset) - empty_candidate_paths)
 
+hitsn_score = hitsn / len(dataset)
+
+hitsn_score_2 = hitsn / (len(dataset) - empty_candidate_paths)
+
 precision_avg = (
     precision_sum
     / len(dataset)
@@ -325,6 +334,8 @@ print()
 print("=" * 60)
 print(f"Hits@1: {hits1:.4f}")
 print(f"Hits@1 sem os vazios: {hits1void:.4f}")
+print(f"Hits@n: {hitsn_score:.4f}")
+print(f"Hits@n sem os vazios: {hitsn_score:.4f}")
 print(f"Precision: {precision_avg:.4f}")
 print(f"Recall: {recall_avg:.4f}")
 print(f"F1: {f1_avg:.4f}")
