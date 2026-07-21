@@ -101,25 +101,13 @@ Answer:
 # PARSER
 # ==========================================================
 
-# def parse_response(text):
-
-#     text = text.replace("\n", ",")
-
-#     answers = [
-#         x.strip()
-#         for x in text.split(",")
-#         if x.strip()
-#     ]
-
-#     return answers
-
 def parse_response(text):
 
-    text = text.replace("\n")
+    text = text.replace("\n", "|")
 
     answers = [
         x.strip()
-        for x in text.split("\n")
+        for x in text.split("|")
         if x.strip()
     ]
 
@@ -240,11 +228,22 @@ for sample in tqdm(dataset):
         gold_answers
     )
 
-    if len(intersection) > 0:
-        hitsn += 1
+    # if len(intersection) > 0:
+    #     hitsn += 1
 
     if first_prediction in gold_answers:
         hits += 1
+        status = "hits1"
+
+    elif len(intersection) > 0:
+        late_hit += 1
+        status = "late_hit"
+
+    elif len(sample["candidate_paths"]) == 0:
+        status = "no_paths"
+
+    else:
+        status = "no_hit"
 
     if len(predicted_set) > 0:
 
@@ -295,17 +294,25 @@ for sample in tqdm(dataset):
             "prediction": predicted_answers,
             "raw_response": raw_response,
             "gold_answers": sample["gold_answers"],
-            "correct": correct
+            "correct": correct,
+            "status": status
         }
     )
 
+
 hits1 = hits / len(dataset)
+
+hitsn = late_hits + hits1
 
 hits1void = hits / (len(dataset) - empty_candidate_paths)
 
 hitsn_score = hitsn / len(dataset)
 
 hitsn_score_2 = hitsn / (len(dataset) - empty_candidate_paths)
+
+late_hits_score = late_hits / len(dataset)
+
+late_hits_score_2 = late_hits / (len(dataset) - empty_candidate_paths)
 
 precision_avg = (
     precision_sum
@@ -346,6 +353,8 @@ print()
 print("=" * 60)
 print(f"Hits@1: {hits1:.4f}")
 print(f"Hits@1 sem os vazios: {hits1void:.4f}")
+print(f"Late_Hits: {late_hit_score:.4f}")
+print(f"Late_Hits sem os vazios: {late_hits_score_2:.4f}")
 print(f"Hits@n: {hitsn_score:.4f}")
 print(f"Hits@n sem os vazios: {hitsn_score_2:.4f}")
 print(f"Precision: {precision_avg:.4f}")
