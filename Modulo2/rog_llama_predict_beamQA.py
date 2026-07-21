@@ -177,6 +177,8 @@ hits = 0
 
 hitsn = 0
 
+late_hits = 0
+
 results = []
 
 empty_candidate_paths = 0
@@ -236,7 +238,7 @@ for sample in tqdm(dataset):
         status = "hits1"
 
     elif len(intersection) > 0:
-        late_hit += 1
+        late_hits += 1
         status = "late_hit"
 
     elif len(sample["candidate_paths"]) == 0:
