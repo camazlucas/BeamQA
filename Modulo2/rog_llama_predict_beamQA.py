@@ -21,29 +21,13 @@ logging.set_verbosity_error()
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument(
-    "--model_path",
-    type=str,
-    required=True
-)
+parser.add_argument("--model_path", type=str, required=True)
 
-parser.add_argument(
-    "--json_path",
-    type=str,
-    required=True
-)
+parser.add_argument("--json_path",type=str,required=True)
 
-parser.add_argument(
-    "--output_path",
-    type=str,
-    required=True
-)
+parser.add_argument("--output_path",type=str,required=True)
 
-parser.add_argument(
-    "--max_new_tokens",
-    type=int,
-    default=128
-)
+parser.add_argument("--max_new_tokens",type=int,default=128)
 
 args = parser.parse_args()
 
@@ -300,6 +284,8 @@ for sample in tqdm(dataset):
 
 hits1 = hits / len(dataset)
 
+hits1void = hits / (len(dataset) - empty_candidate_paths)
+
 precision_avg = (
     precision_sum
     / len(dataset)
@@ -338,6 +324,7 @@ total_time = np.sum(
 print()
 print("=" * 60)
 print(f"Hits@1: {hits1:.4f}")
+print(f"Hits@1 sem os vazios: {hits1void:.4f}")
 print(f"Precision: {precision_avg:.4f}")
 print(f"Recall: {recall_avg:.4f}")
 print(f"F1: {f1_avg:.4f}")
