@@ -101,13 +101,25 @@ Answer:
 # PARSER
 # ==========================================================
 
+# def parse_response(text):
+
+#     text = text.replace("\n", ",")
+
+#     answers = [
+#         x.strip()
+#         for x in text.split(",")
+#         if x.strip()
+#     ]
+
+#     return answers
+
 def parse_response(text):
 
-    text = text.replace("\n", ",")
+    text = text.replace("\n")
 
     answers = [
         x.strip()
-        for x in text.split(",")
+        for x in text.split("\n")
         if x.strip()
     ]
 
