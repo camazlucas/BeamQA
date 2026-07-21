@@ -304,7 +304,7 @@ for sample in tqdm(dataset):
 
 hits1 = hits / len(dataset)
 
-hitsn = late_hits + hits1
+hitsn = late_hits + hits
 
 hits1void = hits / (len(dataset) - empty_candidate_paths)
 
